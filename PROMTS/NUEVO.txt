@@ -1,0 +1,421 @@
+# 🛡️ PROMPT MAESTRO PARA IA — SITIO WEB INTERACTIVO
+## GRUPO EMPRESARIAL SERUMA · Vigilancia y Seguridad Privada
+### "Su aliado estratégico"
+
+> Copia y pega este documento completo como prompt de sistema/inicial para la IA
+> (Claude Code, Cursor, v0, Lovable, Bolt, etc.) que va a construir el sitio.
+> Versión detallada — incluye copy sugerido, código de referencia, wireframes
+> desktop/mobile y checklist de entrega.
+
+---
+
+## 1. ROL Y CONTEXTO
+
+Actúa como un **diseñador y desarrollador front-end senior**, especializado en sitios web
+**premium, elegantes y de alta confianza** para empresas de seguridad y vigilancia privada.
+El cliente es exigente: quiere un sitio que se vea "una chimba" (de altísimo nivel visual),
+no una plantilla genérica de IA. Antes de escribir una sola línea de código, instala y usa
+las *skills* de la sección 3, y estudia el logo oficial (sección 4) porque toda la paleta
+y tipografía del sitio se derivan de él.
+
+---
+
+## 2. OBJETIVO DEL PROYECTO
+
+Diseñar y construir un sitio web **interactivo, elegante y de aspecto corporativo/premium**
+para:
+
+- **Nombre de la empresa:** GRUPO EMPRESARIAL SERUMA
+- **Naming corto:** SERUMA
+- **Tagline oficial (ya definido por el cliente):** "Su aliado estratégico"
+- **Sector:** Vigilancia y seguridad privada
+- **Objetivo del sitio:** transmitir confianza, solidez institucional, tecnología y
+  profesionalismo — que un gerente de RRHH, un administrador de propiedad horizontal o
+  un dueño de empresa sienta que está contratando un socio serio, no una plantilla.
+- **Referencia de nivel:** sitios de bancos/aseguradoras premium o de firmas de consultoría,
+  pero con el dinamismo visual de una marca de seguridad tecnológica (cámaras, monitoreo,
+  respuesta inmediata).
+
+---
+
+## 3. SKILLS OBLIGATORIAS (instalar antes de diseñar)
+
+### 3.1 Skills esenciales (las más importantes)
+
+| # | Skill | Para qué sirve | Comando de instalación |
+|---|-------|-----------------|--------------------------|
+| 1 | **UI/UX Pro Max** | La más potente. Genera sistemas de diseño dark cinematográficos, glassmorphism, product showcase de lujo y estilos premium. | `npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max` |
+| 2 | **frontend-design** (oficial de Anthropic) | Obliga a la IA a hacer diseños distintivos y de alto nivel. Evita el look genérico de IA. | `npx skills add anthropics/skills --skill frontend-design` |
+| 3 | **Impeccable** | Pule el diseño hasta el máximo nivel. Elimina defectos y sube la calidad visual (el "acabado de estudio"). | `npx skills add pbakaus/impeccable` |
+
+### 3.2 Skills complementarias (opcionales pero recomendadas)
+
+| Skill | Para qué sirve | Cómo conseguirla |
+|-------|-----------------|-------------------|
+| **dark-premium-landing-style** | Landings oscuras de lujo (estilo Apple/Tesla) | Buscar en GitHub: `Godzilla675/dark-premium-landing-style` |
+| **dark-tech-style** | Estilo dark técnico premium | Buscar en GitHub: `harrisliangsu/dark-tech-style` |
+
+> ⚠️ Instala primero las 3 esenciales. Las complementarias son un plus si el entorno lo permite.
+> Nota: como el logo de SERUMA usa fondo **claro** (blanco/crema) con negro + dorado + azul,
+> evalúa con el cliente si el sitio va en **modo oscuro** (fondo casi negro, logo sobre
+> tarjeta clara) o en **modo claro premium** (fondo blanco/crema, acentos dorado y azul
+> marino). Este documento entrega ambas variantes de paleta en la sección 5.
+
+---
+
+## 4. IDENTIDAD DE MARCA (basada en el logo oficial entregado por el cliente)
+
+- **Nombre completo:** GRUPO EMPRESARIAL SERUMA
+- **Isotipo/logo actual:** wordmark "SERUMA" en tipografía **serif clásica y elegante**
+  (tipo Didone/serif de alto contraste, trazos finos y remates marcados — evoca banca,
+  legado, solidez), en color **negro**.
+- **Elemento gráfico:** dos "olas"/cintas horizontales curvas debajo del wordmark:
+  una **dorada** (arriba) y una **azul marino** (abajo), que se cruzan sugiriendo
+  movimiento, protección y dinamismo.
+- **Tagline oficial:** *"Su aliado estratégico"* — en la misma familia serif, en negro,
+  centrado debajo del isotipo.
+- **Lectura de marca:** la serif transmite tradición/confianza institucional; las olas
+  doradas y azules aportan dinamismo, "cobertura" y sensación premium (dorado = valor/
+  excelencia, azul = seguridad/confianza).
+
+### Reglas de uso del logo
+- Mantener siempre el área de respeto (mínimo el ancho de la "S" alrededor del logo).
+- Sobre fondos oscuros usar la versión en blanco/dorado (generar variante monocromática
+  clara para el header oscuro y el footer).
+- Nunca deformar las olas ni separar el wordmark del tagline en el uso principal.
+
+---
+
+## 5. SISTEMA DE DISEÑO
+
+### 5.1 Paleta de colores (extraída del logo)
+
+```
+DORADO METÁLICO (ola superior):   #C9A227  →  variante clara #E4C558 / variante oscura #9C7D1B
+AZUL MARINO (ola inferior):       #1B3A6B  →  variante clara #2F5CA6 / variante oscura #10254A
+NEGRO WORDMARK:                   #0E0E10
+BLANCO/CREMA DE FONDO (logo):     #FAF8F3
+```
+
+**Opción A — Modo claro premium (fiel al logo, recomendado como default):**
+```
+Fondo principal:      #FAF8F3   (crema/marfil, igual que el fondo del logo)
+Fondo secundario:     #FFFFFF
+Texto principal:      #14151A   (casi negro)
+Texto secundario:     #5B5F66   (gris plomo)
+Acento primario:      #1B3A6B   (azul marino — botones, links, iconos)
+Acento dorado:        #C9A227   (detalles, líneas divisorias, hover, bordes)
+Estado éxito/activo:  #2F8F6B
+```
+
+**Opción B — Modo oscuro cinematográfico (para secciones "tecnología/monitoreo"):**
+```
+Fondo principal:      #0B0E14   (azul-negro casi puro, coherente con el azul marino)
+Fondo secundario:     #121623
+Texto principal:      #F5F3EC   (blanco crema, coherente con el fondo del logo)
+Acento dorado:        #D8B23F   (más luminoso para contraste en oscuro)
+Acento azul:          #3D6FC0
+Bordes/glass:         rgba(255,255,255,0.08)
+```
+
+> Recomendación: usar **Opción A** como base del sitio (hero, servicios, nosotros) y
+> **Opción B** solo en la sección de "Monitoreo/Tecnología 24-7" para crear contraste
+> dramático tipo "centro de comando".
+
+### 5.2 Tipografía
+
+- **Titulares y wordmark:** una serif de alto contraste que dialogue con el logo —
+  ej. `Playfair Display`, `Cormorant`, `Marcellus` o `Prata` (Google Fonts, gratuitas).
+- **Cuerpo de texto / UI:** una sans-serif limpia y legible — ej. `Work Sans`, `Inter`
+  o `Lexend`, para no competir con la serif del logo.
+- **Jerarquía sugerida:**
+  - H1 hero: serif, 56–72px, negro o blanco según modo.
+  - H2 secciones: serif, 36–44px.
+  - Cuerpo: sans-serif, 16–18px, line-height 1.6.
+  - Micro-texto (labels, eyebrow): sans-serif, uppercase, letter-spacing 0.12em, 12–13px.
+
+### 5.3 Elementos gráficos derivados del logo
+
+- Usar la **curva/ola dorada-azul** como elemento decorativo recurrente: separadores de
+  sección, línea bajo los títulos, fondo sutil del footer, o como "underline" animado en
+  el menú al hacer hover.
+- Los **botones primarios** en azul marino (`#1B3A6B`) con texto blanco; los **botones
+  secundarios/outline** en dorado.
+- Iconografía: línea fina (outline), no rellena — coherente con el trazo elegante del
+  wordmark.
+
+---
+
+## 6. ESTRUCTURA DE SECCIONES — WIREFRAME ASCII (DESKTOP)
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  [LOGO SERUMA]        Servicios  Nosotros  Cobertura  Contacto    │
+│                                                  [Solicitar cotiz.]│  <- header fijo, fondo crema translúcido
+├──────────────────────────────────────────────────────────────────┤
+│                                                                    │
+│   SU ALIADO ESTRATÉGICO EN SEGURIDAD PRIVADA                      │
+│   Vigilancia · Monitoreo 24/7 · Escoltas · Tecnología             │
+│                                                                    │
+│        [ Solicitar cotización ]   [ Conocer servicios ]           │
+│                                                                    │
+│   (fondo: imagen/video sobrio de patrullaje o edificio corporativo│
+│    + ola dorada/azul del logo como elemento gráfico decorativo)   │
+├──────────────────────────────────────────────────────────────────┤
+│ ░░  GRUPO EMPRESARIAL SERUMA · VIGILANCIA 24/7 · MONITOREO  ░░░░░ │  <- letrero/marquee (sección 8)
+│ ░  ESCOLTA EJECUTIVA · SEGURIDAD ELECTRÓNICA · PATRULLAJE  ░░░░░░ │
+├──────────────────────────────────────────────────────────────────┤
+│                     NUESTROS SERVICIOS                            │
+│  ┌───────────┐   ┌───────────┐   ┌───────────┐   ┌───────────┐   │
+│  │ 🛡️ Vigi-  │   │ 🎥 Moni-  │   │ 🚗 Escol- │   │ 🔒 Seg.   │   │
+│  │ lancia    │   │ toreo     │   │ ta        │   │ Electró-  │   │
+│  │ física    │   │ 24/7      │   │ ejecutiva │   │ nica      │   │
+│  └───────────┘   └───────────┘   └───────────┘   └───────────┘   │
+│    (tarjetas con borde dorado sutil, hover con elevación y línea  │
+│     azul marino que se dibuja debajo del título)                  │
+├──────────────────────────────────────────────────────────────────┤
+│   +XXX          +XX           +XX años       24/7                │
+│   Clientes      Ciudades      experiencia    Monitoreo            │
+│         (contador animado al hacer scroll, número en dorado)      │
+├──────────────────────────────────────────────────────────────────┤
+│                   ¿QUIÉNES SOMOS?                                  │
+│   Texto institucional + imagen corporativa + valores (misión,     │
+│   visión, principios) en 3 columnas con ícono outline             │
+├──────────────────────────────────────────────────────────────────┤
+│         SECCIÓN "CENTRO DE MONITOREO" (modo oscuro, opción B)     │
+│   Texto sobre tecnología + imagen/video de sala de monitoreo      │
+├──────────────────────────────────────────────────────────────────┤
+│                 COBERTURA / ZONAS DE OPERACIÓN                    │
+│              (mapa interactivo o listado de ciudades)             │
+├──────────────────────────────────────────────────────────────────┤
+│                TESTIMONIOS DE CLIENTES (carrusel)                 │
+├──────────────────────────────────────────────────────────────────┤
+│         CONTÁCTANOS — Formulario + WhatsApp flotante               │
+├──────────────────────────────────────────────────────────────────┤
+│  Footer: Logo (versión clara) · Servicios · Nosotros · Contacto · │
+│  Redes · Aviso legal · Política de datos                          │
+│  (fondo azul marino oscuro con la ola dorada como remate superior)│
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### 6.1 Wireframe ASCII — MOBILE (apilado, menú hamburguesa)
+
+```
+┌───────────────────────┐
+│ [LOGO]         [≡]    │  <- header
+├───────────────────────┤
+│  SU ALIADO ESTRATÉGICO│
+│  EN SEGURIDAD PRIVADA │
+│  [Solicitar cotiz.]   │
+├───────────────────────┤
+│ ░ SERUMA · VIGILANCIA │  <- marquee (1 línea, scroll horizontal)
+├───────────────────────┤
+│ 🛡️ Vigilancia física  │
+│ 🎥 Monitoreo 24/7     │
+│ 🚗 Escolta ejecutiva  │
+│ 🔒 Seg. electrónica   │
+│ (tarjetas apiladas)   │
+├───────────────────────┤
+│ +XXX  +XX  +XX  24/7  │
+├───────────────────────┤
+│ ¿Quiénes somos?       │
+├───────────────────────┤
+│ Centro de monitoreo   │
+├───────────────────────┤
+│ Cobertura             │
+├───────────────────────┤
+│ Testimonios (swipe)   │
+├───────────────────────┤
+│ Contacto / WhatsApp   │
+├───────────────────────┤
+│ Footer                │
+└───────────────────────┘
+        [WA flotante]
+```
+
+---
+
+## 7. COPY SUGERIDO POR SECCIÓN (punto de partida, ajustable con el cliente)
+
+**Hero (eyebrow / H1 / subtítulo):**
+- Eyebrow: `GRUPO EMPRESARIAL SERUMA`
+- H1: `Su aliado estratégico en seguridad privada`
+- Subtítulo: `Vigilancia física, monitoreo electrónico y escolta ejecutiva con
+  respuesta inmediata, las 24 horas del día.`
+- CTA primario: `Solicitar cotización` · CTA secundario: `Conocer servicios`
+
+**Servicios (títulos + descripción corta de una línea, editable):**
+- Vigilancia física — presencia entrenada y disuasiva en tus instalaciones.
+- Monitoreo 24/7 — supervisión electrónica permanente con respuesta inmediata.
+- Escolta ejecutiva — protección personal discreta y profesional.
+- Seguridad electrónica — CCTV, control de acceso y alarmas integradas.
+
+**Sección "Quiénes somos" (estructura sugerida):** misión, visión, y 3–4 valores
+(ej. integridad, compromiso, tecnología, respuesta inmediata) con ícono outline cada uno.
+
+**CTA de cierre antes del footer:**
+`¿Listo para fortalecer la seguridad de tu empresa? Hablemos hoy.` + botón WhatsApp.
+
+---
+
+## 8. COMPONENTE CLAVE: LETRERO ANIMADO DE SERVICIOS (MARQUEE)
+
+El cliente pidió explícitamente un **letrero que se mueva** (efecto "ticker"), mostrando
+los servicios en bucle infinito, estilo cinta continua. Va justo debajo del hero.
+
+### 8.1 Referencia ASCII del efecto (desplazamiento continuo derecha → izquierda)
+
+```
+Fotograma 1:
+[████ GRUPO EMPRESARIAL SERUMA ✦ SU ALIADO ESTRATÉGICO ✦ VIGILANCIA████]
+
+Fotograma 2 (instantes después, todo se desplazó a la izquierda):
+[██ SERUMA ✦ SU ALIADO ESTRATÉGICO ✦ VIGILANCIA 24/7 ✦ MONITOREO ████]
+
+Fotograma 3:
+[█ SU ALIADO ESTRATÉGICO ✦ VIGILANCIA 24/7 ✦ MONITOREO ✦ ESCOLTA ████]
+```
+
+### 8.2 Contenido sugerido del letrero
+
+```
+GRUPO EMPRESARIAL SERUMA  ✦  SU ALIADO ESTRATÉGICO  ✦  VIGILANCIA 24/7  ✦
+MONITOREO ELECTRÓNICO  ✦  ESCOLTA EJECUTIVA  ✦  PATRULLAJE MÓVIL  ✦
+SEGURIDAD PERIMETRAL  ✦  RESPUESTA INMEDIATA  ✦
+```
+
+### 8.3 Código de referencia (HTML + CSS, loop infinito sin saltos)
+
+```html
+<div class="marquee" aria-label="Servicios de SERUMA">
+  <div class="marquee__track">
+    <span class="marquee__item">GRUPO EMPRESARIAL SERUMA</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">SU ALIADO ESTRATÉGICO</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">VIGILANCIA 24/7</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">MONITOREO ELECTRÓNICO</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">ESCOLTA EJECUTIVA</span>
+    <span class="marquee__dot">✦</span>
+  </div>
+  <!-- El mismo bloque se duplica una vez, con aria-hidden, para el loop perfecto -->
+  <div class="marquee__track" aria-hidden="true">
+    <span class="marquee__item">GRUPO EMPRESARIAL SERUMA</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">SU ALIADO ESTRATÉGICO</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">VIGILANCIA 24/7</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">MONITOREO ELECTRÓNICO</span>
+    <span class="marquee__dot">✦</span>
+    <span class="marquee__item">ESCOLTA EJECUTIVA</span>
+    <span class="marquee__dot">✦</span>
+  </div>
+</div>
+```
+
+```css
+.marquee {
+  overflow: hidden;
+  display: flex;
+  background: linear-gradient(90deg, #1B3A6B, #14151A);
+  padding: 14px 0;
+}
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 1.5rem;
+  align-items: center;
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+.marquee__item {
+  font-family: "Playfair Display", serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+  color: #FAF8F3;
+  white-space: nowrap;
+}
+.marquee__dot {
+  color: #C9A227; /* dorado del logo */
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+```
+
+> Nota de accesibilidad: el segundo `.marquee__track` lleva `aria-hidden="true"` para que
+> un lector de pantalla no repita el contenido dos veces; el contenido real solo se lee
+> una vez.
+
+---
+
+## 9. INTERACTIVIDAD REQUERIDA (además del marquee)
+
+1. **Scroll reveal:** secciones y tarjetas aparecen con fade + slide al entrar en viewport.
+2. **Contadores animados:** estadísticas (clientes, ciudades, años, disponibilidad) suben
+   desde 0 al llegar a esa sección, con el número en dorado.
+3. **Hover premium en tarjetas:** leve elevación (`translateY(-4px)`), sombra suave y una
+   línea dorada/azul que se "dibuja" debajo del título del servicio.
+4. **Botón flotante de WhatsApp**, siempre visible, esquina inferior derecha.
+5. **Menú responsive** tipo overlay en móvil, con transición suave y logo en versión clara
+   sobre fondo azul marino.
+6. **Formulario de contacto interactivo** con validación en tiempo real, estados de error/
+   éxito animados y confirmación visual (check dorado) al enviar.
+7. **Cambio de sección clara → oscura** (Opción A → Opción B) con transición de fondo suave
+   al llegar a "Centro de monitoreo", para dar el efecto "entramos al centro de comando".
+8. (Opcional) **Mapa interactivo** de cobertura con pines animados en dorado.
+
+---
+
+## 10. REQUISITOS TÉCNICOS
+
+- **Responsive 100%:** móvil, tablet, escritorio (ver wireframes de la sección 6).
+- **Rendimiento:** animaciones en `transform`/`opacity` (GPU), lazy-load de imágenes,
+  evitar JS pesado innecesario para el marquee (CSS puro, como en 8.3).
+- **SEO básico:** título y meta descripción por página, `alt` descriptivo en imágenes,
+  estructura semántica (`header`, `main`, `section`, `footer`), un solo `<h1>` por página.
+- **Accesibilidad:** contraste AA mínimo entre texto y fondo, foco visible en botones y
+  links, `aria-label` en íconos sin texto, marquee pausable (ver 8.3).
+- **Formulario de contacto funcional:** conectado a correo corporativo y/o WhatsApp Business.
+- **Favicon e íconos** derivados del isotipo (solo la "S" con la ola, para tamaños pequeños).
+
+---
+
+## 11. CHECKLIST DE ASSETS A SOLICITAR AL CLIENTE
+
+- [ ] Logo en alta resolución, con fondo transparente (PNG/SVG) — versión oscura y clara.
+- [ ] Fotografías/video corporativo real (personal, instalaciones, patrullaje) — evitar
+      stock genérico siempre que sea posible, para reforzar la sensación de "aliado real".
+- [ ] Cifras reales para los contadores (clientes, ciudades, años de experiencia).
+- [ ] Testimonios de clientes (texto y, si es posible, nombre/empresa con autorización).
+- [ ] Ciudades/zonas exactas de cobertura.
+- [ ] Datos de contacto oficiales (WhatsApp, correo, dirección, redes sociales).
+
+---
+
+## 12. ENTREGABLES ESPERADOS DE LA IA
+
+1. Código fuente completo (HTML/CSS/JS o el framework que se defina con el cliente).
+2. Todas las secciones del wireframe (6), incluyendo el marquee (8) ya funcional.
+3. Versión responsive verificada en los tres breakpoints.
+4. Documento corto de estilo (paleta, tipografía, componentes) para mantener consistencia
+   en futuras piezas de marca (redes sociales, papelería, vehículos, uniformes).
+
+---
+
+## 13. INSTRUCCIÓN FINAL PARA LA IA
+
+> Antes de generar cualquier código, confirma que las skills de la sección 3 están activas.
+> Toda decisión de color y tipografía debe partir del logo oficial (sección 4): serif
+> elegante en negro, ola dorada + ola azul marino, tagline "Su aliado estratégico".
+> Prioriza siempre un resultado que se sienta "hecho a mano por un estudio de diseño
+> premium para una firma de seguridad seria", no una plantilla genérica. El letrero
+> animado de servicios (sección 8) es un requisito explícito del cliente y NO es opcional.

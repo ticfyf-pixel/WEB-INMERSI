@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SERUMA | Sistema de Vigilancia Biomecatrónica & Ojo Táctico IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;900&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold-primary: #c5a059;
+      --gold-light: #dfca8c;
+      --gold-glow: rgba(197, 160, 89, 0.35);
+      --cyan-tech: #00e5ff;
+      --cyan-glow: rgba(0, 229, 255, 0.4);
+      --bg-dark: #05070a;
+      --bg-panel: rgba(10, 14, 22, 0.85);
+      --font-display: 'Lexend', sans-serif;
+      --font-body: 'Work Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-dark);
+      color: #fff;
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Ambient HUD Grid Background */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(197, 160, 89, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(197, 160, 89, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-vignette {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 40%, rgba(3, 5, 8, 0.95) 90%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Scanline effect */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.6;
+    }
+
+    /* Header Telemetry */
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 32px;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+      backdrop-filter: blur(12px);
+      background: rgba(5, 7, 10, 0.7);
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo-glow {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid var(--gold-primary);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 15px var(--gold-glow);
+      background: rgba(197, 160, 89, 0.1);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+    .brand-title span { color: var(--gold-primary); }
+
+    .telemetry-pills {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill.active {
+      border-color: var(--cyan-tech);
+      color: var(--cyan-tech);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    .blink-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00ff66;
+      box-shadow: 0 0 8px #00ff66;
+      animation: blink 1.2s infinite ease-in-out;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* Main Container */
+    main {
+      position: relative;
+      z-index: 5;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .scanner-hud-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      background: var(--bg-panel);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 30px rgba(197, 160, 89, 0.1);
+      backdrop-filter: blur(20px);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+    }
+
+    .scanner-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      background: rgba(20, 26, 38, 0.8);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+    }
+
+    .scanner-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .scanner-mode-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mode-btn {
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: transparent;
+      color: #aaa;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mode-btn:hover, .mode-btn.active {
+      background: var(--gold-primary);
+      color: #000;
+      border-color: var(--gold-primary);
+      font-weight: 600;
+    }
+
+    /* Eye Canvas Wrapper */
+    .eye-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #020305;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: crosshair;
+    }
+
+    #eyeCanvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.3s;
+    }
+
+    /* Thermal / Night Vision Filters */
+    .viewport-night #eyeCanvas {
+      filter: brightness(1.2) contrast(1.4) hue-rotate(85deg) saturate(2);
+    }
+    .viewport-thermal #eyeCanvas {
+      filter: invert(0.9) hue-rotate(200deg) saturate(3) contrast(1.6);
+    }
+
+    /* Futuristic Reticle Overlay */
+    .hud-reticle-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .corner-bracket {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: var(--gold-primary);
+      border-style: solid;
+      opacity: 0.7;
+    }
+    .top-left { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
+    .top-right { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
+    .bottom-left { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
+    .bottom-right { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+    /* Laser Sweep Line */
+    .laser-sweep {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan-tech), #fff, var(--cyan-tech), transparent);
+      box-shadow: 0 0 12px var(--cyan-tech);
+      animation: laserSweep 3.5s ease-in-out infinite alternate;
+      z-index: 12;
+      opacity: 0.85;
+    }
+    @keyframes laserSweep {
+      0% { top: 8%; opacity: 0.3; }
+      50% { opacity: 0.9; }
+      100% { top: 92%; opacity: 0.3; }
+    }
+
+    /* Target Crosshair following mouse */
+    .crosshair-target {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 1px dashed var(--cyan-tech);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 15;
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+    .crosshair-target::before, .crosshair-target::after {
+      content: '';
+      position: absolute;
+      background: var(--cyan-tech);
+    }
+    .crosshair-target::before {
+      top: 50%; left: -8px; right: -8px; height: 1px; transform: translateY(-50%);
+    }
+    .crosshair-target::after {
+      left: 50%; top: -8px; bottom: -8px; width: 1px; transform: translateX(-50%);
+    }
+
+    .crosshair-target.locked {
+      border-color: #ff3344;
+      box-shadow: 0 0 16px rgba(255, 51, 68, 0.6);
+      border-style: solid;
+    }
+    .crosshair-target.locked::before, .crosshair-target.locked::after {
+      background: #ff3344;
+    }
+
+    /* Target Data Tag */
+    .target-tag {
+      position: absolute;
+      left: 70px;
+      top: 0;
+      white-space: nowrap;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      background: rgba(5, 10, 20, 0.85);
+      border: 1px solid var(--cyan-tech);
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    /* Live Telemetry Footer */
+    .scanner-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      background: rgba(10, 14, 22, 0.9);
+      border-top: 1px solid rgba(197, 160, 89, 0.2);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+
+    .telemetry-val {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .btn-scan {
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid var(--gold-primary);
+      background: linear-gradient(135deg, rgba(197,160,89,0.3), rgba(197,160,89,0.1));
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s;
+    }
+    .btn-scan:hover {
+      background: var(--gold-primary);
+      color: #000;
+      box-shadow: 0 0 20px var(--gold-glow);
+      transform: translateY(-1px);
+    }
+
+    /* Flash Scan Overlay */
+    .scan-flash {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity 0.4s;
+    }
+    .scan-flash.active {
+      opacity: 1;
+      background: radial-gradient(circle at center, rgba(0, 229, 255, 0.6), transparent 70%);
+    }
+
+    /* Back Link to Home */
+    .back-nav {
+      margin-top: 24px;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+    }
+    .back-nav a {
+      color: var(--gold-light);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+    .back-nav a:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-vignette"></div>
+  <div class="scanlines"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-box">
+      <div class="brand-logo-glow">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div class="brand-title">SERUMA <span>BIOMETRICS</span></div>
+    </div>
+
+    <div class="telemetry-pills">
+      <div class="pill active"><span class="blink-dot"></span> SENSOR OCULAR: ACTIVO</div>
+      <div class="pill">FRAME RATE: <span class="telemetry-val" id="fpsVal">60 FPS</span></div>
+      <div class="pill">DEFCON: <span class="telemetry-val" style="color:#00e5ff">1</span></div>
+    </div>
+  </header>
+
+  <!-- Main Showcase -->
+  <main>
+    <div class="scanner-hud-container" id="scannerCard">
+      <!-- Scanner Bar -->
+      <div class="scanner-header">
+        <div class="scanner-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M3 12h1m16 0h1M12 3v1m0 16v1"/>
+          </svg>
+          RECONOCIMIENTO RETINIANO TÁCTICO · 40 CUADROS ROTATORIOS
+        </div>
+        <div class="scanner-mode-btns">
+          <button class="mode-btn active" data-mode="normal">ÓPTICO HD</button>
+          <button class="mode-btn" data-mode="night">VISIÓN NOCTURNA</button>
+          <button class="mode-btn" data-mode="thermal">TÉRMICO</button>
+        </div>
+      </div>
+
+      <!-- Eye Viewport -->
+      <div class="eye-viewport" id="eyeViewport">
+        <canvas id="eyeCanvas" width="1280" height="720"></canvas>
+
+        <!-- Laser Line -->
+        <div class="laser-sweep"></div>
+
+        <!-- Corner Brackets -->
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <div class="corner-bracket bottom-left"></div>
+        <div class="corner-bracket bottom-right"></div>
+
+        <!-- Crosshair Cursor Tracker -->
+        <div class="crosshair-target" id="crosshair">
+          <div class="target-tag" id="targetTag">
+            <div>OBJETIVO: <span id="tagCoords">0, 0</span></div>
+            <div>ANG: <span id="tagAngle">0°</span> | FRM: <span id="tagFrame">01</span></div>
+          </div>
+        </div>
+
+        <!-- Flash Effect -->
+        <div class="scan-flash" id="scanFlash"></div>
+      </div>
+
+      <!-- Footer Telemetry -->
+      <div class="scanner-footer">
+        <div>COORDINADAS DEL CURSOR: <span class="telemetry-val" id="cursorPos">X: 000 | Y: 000</span></div>
+        <div>CONFIANZA BIOMÉTRICA: <span class="telemetry-val" style="color:#00ff88;">99.8% IDENTIFICADO</span></div>
+        <button class="btn-scan" id="btnScan">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2v4m0 12v4M2 12h4m12 0h4"/>
+            <circle cx="12" cy="12" r="4"/>
+          </svg>
+          FORZAR ESCANEO VIP
+        </button>
+      </div>
+    </div>
+
+    <div class="back-nav">
+      <a href="index.html">← Volver al Portal Principal de SERUMA</a>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      // Preload 40 Frames
+      const TOTAL_FRAMES = 40;
+      const images = [];
+      let loadedCount = 0;
+      const canvas = document.getElementById('eyeCanvas');
+      const ctx = canvas.getContext('2d');
+      const eyeViewport = document.getElementById('eyeViewport');
+      const scannerCard = document.getElementById('scannerCard');
+      const crosshair = document.getElementById('crosshair');
+      const cursorPosEl = document.getElementById('cursorPos');
+      const tagCoords = document.getElementById('tagCoords');
+      const tagAngle = document.getElementById('tagAngle');
+      const tagFrame = document.getElementById('tagFrame');
+      const scanFlash = document.getElementById('scanFlash');
+      const btnScan = document.getElementById('btnScan');
+
+      let currentFrame = 5; // Center/rest frame
+      let targetFrame = 5;
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let smoothMouseX = mouseX;
+      let smoothMouseY = mouseY;
+
+      // Web Audio API for tactical clicks
+      let audioCtx = null;
+      function playTacticalSound(freq, duration, type='sine') {
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+          osc.start();
+          osc.stop(audioCtx.currentTime + duration);
+        } catch(e){}
+      }
+
+      // Preload loop
+      for (let i = 1; i <= TOTAL_FRAMES; i++) {
+        const img = new Image();
+        const numStr = String(i).padStart(3, '0');
+        img.src = `EYE_FRAMES/ezgif-frame-${numStr}.jpg`;
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === 1) {
+            // Draw first frame immediately
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          }
+        };
+        images.push(img);
+      }
+
+      // Global Mouse Tracker
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorPosEl.textContent = `X: ${Math.round(mouseX)} | Y: ${Math.round(mouseY)}`;
+      });
+
+      // Render Loop
+      function render() {
+        // Smooth cursor interpolation
+        smoothMouseX += (mouseX - smoothMouseX) * 0.12;
+        smoothMouseY += (mouseY - smoothMouseY) * 0.12;
+
+        const rect = eyeViewport.getBoundingClientRect();
+        const eyeCenterX = rect.left + rect.width * 0.46; // Pupil is slightly left of optical center
+        const eyeCenterY = rect.top + rect.height * 0.50;
+
+        const dx = smoothMouseX - eyeCenterX;
+        const dy = smoothMouseY - eyeCenterY;
+
+        // Angle in degrees [0, 360)
+        let deg = Math.atan2(dy, dx) * (180 / Math.PI);
+        if (deg < 0) deg += 360;
+
+        // Frame 5 corresponds to 0 degrees (3 o'clock / right)
+        // Rotate 40 frames across 360 degrees
+        let frameCalc = Math.round(5 + (deg / 360) * TOTAL_FRAMES);
+        while (frameCalc > TOTAL_FRAMES) frameCalc -= TOTAL_FRAMES;
+        while (frameCalc < 1) frameCalc += TOTAL_FRAMES;
+
+        targetFrame = frameCalc;
+
+        // Draw Eye Frame
+        const img = images[targetFrame - 1];
+        if (img && img.complete) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+
+        // Parallax 3D Card Tilt
+        const normX = (smoothMouseX / window.innerWidth) - 0.5;
+        const normY = (smoothMouseY / window.innerHeight) - 0.5;
+        scannerCard.style.transform = `perspective(1000px) rotateY(${normX * 12}deg) rotateX(${-normY * 8}deg)`;
+
+        // Crosshair positioning inside viewport
+        const relX = smoothMouseX - rect.left;
+        const relY = smoothMouseY - rect.top;
+        if (relX >= -50 && relX <= rect.width + 50 && relY >= -50 && relY <= rect.height + 50) {
+          crosshair.style.opacity = '1';
+          crosshair.style.left = `${Math.max(20, Math.min(rect.width - 20, relX))}px`;
+          crosshair.style.top = `${Math.max(20, Math.min(rect.height - 20, relY))}px`;
+          tagCoords.textContent = `${Math.round(relX)}, ${Math.round(relY)}`;
+          tagAngle.textContent = `${Math.round(deg)}°`;
+          tagFrame.textContent = String(targetFrame).padStart(2, '0');
+
+          const distToEye = Math.hypot(relX - rect.width * 0.46, relY - rect.height * 0.50);
+          if (distToEye < 80) {
+            crosshair.classList.add('locked');
+          } else {
+            crosshair.classList.remove('locked');
+          }
+        } else {
+          crosshair.style.opacity = '0.4';
+        }
+
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+
+      // Vision Mode Toggles
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const mode = btn.dataset.mode;
+          eyeViewport.className = 'eye-viewport';
+          if (mode === 'night') eyeViewport.classList.add('viewport-night');
+          if (mode === 'thermal') eyeViewport.classList.add('viewport-thermal');
+          playTacticalSound(750, 0.08, 'triangle');
+        });
+      });
+
+      // Interactive Scan Button
+      function triggerScan() {
+        playTacticalSound(900, 0.25, 'sawtooth');
+        scanFlash.classList.add('active');
+        setTimeout(() => {
+          scanFlash.classList.remove('active');
+          playTacticalSound(440, 0.4, 'sine');
+        }, 350);
+      }
+      btnScan.addEventListener('click', triggerScan);
+      eyeViewport.addEventListener('click', triggerScan);
+    })();
+  </script>
+</body>
+</html>

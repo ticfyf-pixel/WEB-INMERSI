@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SERUMA | Grupo Empresarial · Seguridad Privada & Tecnología Táctica 3D</title>
+  <meta name="description" content="Grupo Empresarial SERUMA: Vigilancia física, monitoreo 24/7 y escolta ejecutiva. Su aliado estratégico en seguridad privada.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="LOGO/cropped-Recurso-3@180x.webp" type="image/webp">
+</head>
+<body class="cyber-theme">
+    <!-- VERTICAL HUD WINDOW NAVIGATION TRACKER (01 - 06) -->
+  <div class="hud-window-nav" id="hudWindowNav" aria-label="Navegación de Ventanas">
+    <a href="#hero" class="hud-win-dot active" data-win="01" title="01. Inicio"><span class="win-num">01</span><span class="win-circle"></span><span class="win-tip">INICIO</span></a>
+    <a href="#servicios" class="hud-win-dot" data-win="02" title="02. Servicios"><span class="win-num">02</span><span class="win-circle"></span><span class="win-tip">SERVICIOS</span></a>
+    <a href="#cotizador" class="hud-win-dot" data-win="03" title="03. Cotizador 3D"><span class="win-num">03</span><span class="win-circle"></span><span class="win-tip">COTIZADOR</span></a>
+    <a href="#monitoreo" class="hud-win-dot" data-win="04" title="04. Comando CCTV"><span class="win-num">04</span><span class="win-circle"></span><span class="win-tip">CCTV</span></a>
+    <a href="#cobertura" class="hud-win-dot" data-win="05" title="05. Cobertura"><span class="win-num">05</span><span class="win-circle"></span><span class="win-tip">COBERTURA</span></a>
+    <a href="#contacto" class="hud-win-dot" data-win="06" title="06. Contacto"><span class="win-num">06</span><span class="win-circle"></span><span class="win-tip">CONTACTO</span></a>
+  </div>
+
+  <!-- PERSISTENT SCROLL-DRIVEN 3D EYE CANVAS (ZOOMING IN/OUT OF THE EYE ON SCROLL) -->
+  <canvas id="fullscreenEyeCanvas" class="hero-fullscreen-eye-canvas"></canvas>
+  <div class="hud-scanlines" aria-hidden="true"></div>
+  <div class="hud-vignette" aria-hidden="true"></div>
+  <div id="cursor-dot" class="cyber-cursor-dot"></div>
+  <div id="cursor-ring" class="cyber-cursor-ring"></div>
+
+  <div class="telemetry-bar">
+    <div class="telemetry-container">
+      <div class="telemetry-item"><span class="pulse-indicator"></span> SISTEMA TÁCTICO: <strong class="text-gold">OPERACIONAL 24/7</strong></div>
+      <div class="telemetry-item d-none-mob">DEFCON: <strong class="text-cyan">NIVEL 1</strong> · BOGOTÁ D.C.</div>
+      <div class="telemetry-item d-none-mob">COORD: <span id="live-coords">4.7110° N, 74.0721° W</span></div>
+      <div class="telemetry-item telemetry-audio">
+        <button id="sound-toggle" class="audio-btn" title="Activar/Silenciar Efectos de Sonido">
+          <span class="audio-bars"><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+          <span id="sound-text">AUDIO: ON</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <header class="main-header" id="navbar">
+    <div class="header-container">
+      <a href="#hero" class="brand-logo magnetic-target">
+        <div class="logo-glow-wrapper">
+          <img src="LOGO/cropped-Recurso-3@180x.webp" alt="GRUPO EMPRESARIAL SERUMA" class="brand-img">
+        </div>
+        <div class="brand-badge"><span class="gold-text">VIP DEFENSE</span></div>
+      </a>
+      <nav class="nav-menu">
+        <a href="#hero" class="nav-link active magnetic-target"><span class="nav-num">01</span> INICIO</a>
+        <a href="#servicios" class="nav-link magnetic-target"><span class="nav-num">02</span> SERVICIOS</a>
+        <a href="#cotizador" class="nav-link magnetic-target"><span class="nav-num">03</span> COTIZADOR 3D</a>
+        <a href="#monitoreo" class="nav-link magnetic-target"><span class="nav-num">04</span> COMANDO CCTV</a>
+        <a href="#cobertura" class="nav-link magnetic-target"><span class="nav-num">05</span> COBERTURA</a>
+        <a href="#contacto" class="nav-link magnetic-target"><span class="nav-num">06</span> CONTACTO</a>
+      </nav>
+      <div class="header-actions">
+        <a href="https://wa.me/573001234567?text=Hola%20SERUMA%2C%20requiero%20asesoria%20inmediata" target="_blank" rel="noopener" class="btn-hud-whatsapp magnetic-target">
+          <span class="wa-pulse"></span>
+          <span>WHATSAPP VIP</span>
+        </a>
+        <a href="#cotizador" class="btn-hud-gold magnetic-target"><span>COTIZAR AHORA</span></a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-overlay" id="mobileOverlay">
+    <div class="mobile-overlay-content">
+      <div class="mobile-overlay-header">
+        <img src="LOGO/cropped-Recurso-3@180x.webp" alt="SERUMA" class="mob-logo">
+        <button class="mobile-close" id="mobileClose">✕</button>
+      </div>
+      <ul class="mobile-links">
+        <li><a href="#hero" class="mob-nav-link"><span class="text-gold">01.</span> INICIO</a></li>
+        <li><a href="#servicios" class="mob-nav-link"><span class="text-gold">02.</span> SERVICIOS</a></li>
+        <li><a href="#cotizador" class="mob-nav-link"><span class="text-gold">03.</span> COTIZADOR 3D</a></li>
+        <li><a href="#monitoreo" class="mob-nav-link"><span class="text-gold">04.</span> COMANDO CCTV</a></li>
+        <li><a href="#cobertura" class="mob-nav-link"><span class="text-gold">05.</span> COBERTURA</a></li>
+        <li><a href="#contacto" class="mob-nav-link"><span class="text-gold">06.</span> CONTACTO</a></li>
+      </ul>
+      <div class="mobile-cta-box"><a href="#cotizador" class="btn-hud-gold full-w">COTIZAR ONLINE</a></div>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero-section hero-eye-epicenter stage-deck stage-active" id="hero">
+      <!-- 1. FULLSCREEN INTERACTIVE CYBERNETIC EYE (EL EPICENTRO VISUAL DE LA PÁGINA) -->
+      <!-- canvas moved to global persistent background -->
+
+      <!-- 2. LUXURY CINEMATIC VIGNETTE & CONTRAST GRADIENT -->
+      <div class="hero-eye-vignette"></div>
+      <div class="hero-eye-grid-scrim"></div>
+
+      <!-- 3. TACTICAL HUD RETICLES & SCANNER OVERLAY -->
+      <div class="hero-eye-hud-overlay">
+        <div class="hero-laser-sweep"></div>
+        <div class="hero-reticle-tracker" id="heroReticleTracker">
+          <div class="reticle-ring-outer"></div>
+          <div class="reticle-crosshair"></div>
+          <div class="reticle-data-badge">
+            <span class="reticle-dot"></span>
+            <span id="heroReticleDeg">0° TRACKING</span>
+          </div>
+        </div>
+        <!-- Corner Brackets -->
+        <div class="hero-corner top-l"></div>
+        <div class="hero-corner top-r"></div>
+        <div class="hero-corner bot-l"></div>
+        <div class="hero-corner bot-r"></div>
+      </div>
+
+      <!-- SECURIFY: 3 GIANT STAGGERED WORDS -->
+      <h1 class="sec-word sec-word-1">proteger</h1>
+      <h1 class="sec-word sec-word-2">su</h1>
+      <h1 class="sec-word sec-word-3">empresa</h1>
+
+      <!-- SECURIFY STAT: TOP RIGHT -->
+      <div class="sec-stat sec-stat-tr">
+        <div class="sec-stat-row sec-row-end">
+          <div class="sec-stat-divider sec-div-pos"></div>
+          <span class="sec-stat-num">+350</span>
+        </div>
+        <p class="sec-stat-label sec-label-right">empresas protegidas</p>
+      </div>
+
+      <!-- SECURIFY STAT: BOTTOM LEFT -->
+      <div class="sec-stat sec-stat-bl">
+        <div class="sec-stat-row">
+          <span class="sec-stat-num">+15</span>
+          <div class="sec-stat-divider sec-div-neg"></div>
+        </div>
+        <p class="sec-stat-label">años de trayectoria</p>
+      </div>
+
+      <!-- SECURIFY STAT: BOTTOM RIGHT -->
+      <div class="sec-stat sec-stat-br">
+        <div class="sec-stat-row sec-row-end">
+          <div class="sec-stat-divider sec-div-neg"></div>
+          <span class="sec-stat-num">24/7</span>
+        </div>
+        <p class="sec-stat-label sec-label-right">monitoreo activo</p>
+      </div>
+
+      <!-- SECURIFY: CLEAN LEFT-COLUMN EDITORIAL & BUTTONS -->
+      <div class="hero-editorial-sidebar">
+        <p class="hero-lead-editorial">
+          Custodia armada certificada, monitoreo electrónico 24/7 y esquemas de reacción táctica inmediata.
+        </p>
+
+        <div class="hero-controls-hud">
+          <a href="#cotizador" class="btn-cyber-primary magnetic-target">
+            <span class="btn-content">
+              <span class="btn-title">SIMULAR COTIZACIÓN</span>
+              <span class="btn-arrow">→</span>
+            </span>
+          </a>
+
+          <a href="#monitoreo" class="btn-cyber-secondary magnetic-target">
+            <span class="btn-content">
+              <span class="btn-icon">⌖</span>
+              <span class="btn-title">CENTRO CCTV</span>
+            </span>
+          </a>
+
+          <div class="hero-eye-status-pill">
+            <span class="pulse-indicator"></span>
+            <span id="heroEyeTelemetryText">ESCÁNER OCULAR 3D: 0% PROFUNDIDAD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-scroll-anchor">
+        <a href="#stats" class="scroll-capsule">
+          <span class="scroll-mouse"><span class="scroll-wheel"></span></span>
+          <span class="scroll-text">DESLIZAR PARA EXPLORAR</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="cyber-ticker-band">
+      <div class="ticker-glitch-border"></div>
+      <div class="ticker-track">
+        <div class="ticker-items">
+          <span class="t-gold">GRUPO EMPRESARIAL SERUMA</span> <span class="t-sep">✦</span>
+          <span class="t-white">SU ALIADO ESTRATÉGICO</span> <span class="t-sep">✦</span>
+          <span class="t-cyan">VIGILANCIA FÍSICA CERTIFICADA</span> <span class="t-sep">✦</span>
+          <span class="t-gold">MONITOREO ELECTRÓNICO 24/7/365</span> <span class="t-sep">✦</span>
+          <span class="t-white">ESCOLTAS VIP BLINDADOS</span> <span class="t-sep">✦</span>
+          <span class="t-cyan">REACCIÓN EN &lt; 4 MIN</span> <span class="t-sep">✦</span>
+          <span class="t-gold">CCTV CON INTELIGENCIA ARTIFICIAL</span> <span class="t-sep">✦</span>
+        </div>
+        <div class="ticker-items" aria-hidden="true">
+          <span class="t-gold">GRUPO EMPRESARIAL SERUMA</span> <span class="t-sep">✦</span>
+          <span class="t-white">SU ALIADO ESTRATÉGICO</span> <span class="t-sep">✦</span>
+          <span class="t-cyan">VIGILANCIA FÍSICA CERTIFICADA</span> <span class="t-sep">✦</span>
+          <span class="t-gold">MONITOREO ELECTRÓNICO 24/7/365</span> <span class="t-sep">✦</span>
+          <span class="t-white">ESCOLTAS VIP BLINDADOS</span> <span class="t-sep">✦</span>
+          <span class="t-cyan">REACCIÓN EN &lt; 4 MIN</span> <span class="t-sep">✦</span>
+          <span class="t-gold">CCTV CON INTELIGENCIA ARTIFICIAL</span> <span class="t-sep">✦</span>
+        </div>
+      </div>
+    </div>
+    <section class="stats-hud-section" id="stats">
+      <div class="stats-container">
+        <div class="stat-tile" data-tilt>
+          <div class="stat-glow"></div>
+          <div class="stat-header"><span class="stat-tag">AUDITORÍA</span><span class="stat-icon"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span></div>
+          <div class="stat-number-wrap"><span class="stat-counter" data-target="350">0</span><span class="stat-plus">+</span></div>
+          <p class="stat-label">EMPRESAS Y RESIDENCIALES PROTEGIDOS</p>
+          <div class="stat-bar-graph"><span style="width: 94%"></span></div>
+        </div>
+
+        <div class="stat-tile" data-tilt>
+          <div class="stat-glow"></div>
+          <div class="stat-header"><span class="stat-tag">DESPLIEGUE</span><span class="stat-icon"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span></div>
+          <div class="stat-number-wrap"><span class="stat-counter" data-target="14">0</span><span class="stat-plus">+</span></div>
+          <p class="stat-label">CIUDADES CON CENTRO DE REACCIÓN</p>
+          <div class="stat-bar-graph"><span style="width: 88%"></span></div>
+        </div>
+
+        <div class="stat-tile" data-tilt>
+          <div class="stat-glow"></div>
+          <div class="stat-header"><span class="stat-tag">TRAYECTORIA</span><span class="stat-icon"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
+          <div class="stat-number-wrap"><span class="stat-counter" data-target="15">0</span><span class="stat-plus"> AÑOS</span></div>
+          <p class="stat-label">LIDERANDO LA SEGURIDAD INSTITUCIONAL</p>
+          <div class="stat-bar-graph"><span style="width: 100%"></span></div>
+        </div>
+
+        <div class="stat-tile stat-tile-highlight" data-tilt>
+          <div class="stat-glow"></div>
+          <div class="stat-header"><span class="stat-tag">DISPONIBILIDAD</span><span class="stat-icon"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span></div>
+          <div class="stat-number-wrap text-gold"><span class="stat-static">24/7</span></div>
+          <p class="stat-label">MONITOREO PERMANENTE SIN PAUSAS</p>
+          <div class="stat-bar-graph"><span style="width: 100%; background: var(--gold-primary);"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-matrix-section stage-deck" id="servicios">
+      <div class="yventu-bg-marquee-wrap" aria-hidden="true">
+        <div class="yventu-bg-marquee-track">
+          <span class="bg-marquee-text">GRUPO EMPRESARIAL SERUMA ✦ VIGILANCIA ARMADA ✦ MONITOREO 24/7 ✦ ESCOLTAS VIP ✦ REACCIÓN INMEDIATA ✦ SEGURIDAD 360º ✦ </span>
+          <span class="bg-marquee-text">GRUPO EMPRESARIAL SERUMA ✦ VIGILANCIA ARMADA ✦ MONITOREO 24/7 ✦ ESCOLTAS VIP ✦ REACCIÓN INMEDIATA ✦ SEGURIDAD 360º ✦ </span>
+        </div>
+      </div>
+      <div class="section-head-hud">
+        <div class="eyebrow-hud"><span class="hud-cross">+</span> DIVISIONES DE OPERACIONES <span class="hud-cross">+</span></div>
+        <h2 class="section-cyber-title">Servicios de Seguridad <span class="gold-gradient">y Vigilancia Especializada</span></h2>
+        <p class="section-cyber-desc">Arquitectura de seguridad blindada modular con tecnología biométrica, vigilancia armada y respuesta motorizada.</p>
+      </div>
+
+      <div class="matrix-cards-grid">
+        <article class="cyber-card magnetic-target" data-tilt>
+          <div class="cyber-card-frame"></div>
+          <div class="card-hud-top"><span class="card-code">SEC-01 // TÁCTICO</span><span class="card-status-dot active"></span></div>
+          <div class="card-icon-hex"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3 class="card-title">Vigilancia Física Armada</h3>
+          <p class="card-text">Oficiales de seguridad con entrenamiento balístico de alto nivel, control de accesos computarizado y protocolos disuasivos.</p>
+          <ul class="card-features">
+            <li><span>✓</span> Personal certificado SuperVigilancia</li>
+            <li><span>✓</span> Rondas geolocalizadas por RFID</li>
+            <li><span>✓</span> Protocolos antiterrorismo y disuasión</li>
+          </ul>
+          <div class="card-action-bar"><a href="#cotizador" class="card-btn-action">CONFIGURAR SERVICIO <span>→</span></a></div>
+        </article>
+
+        <article class="cyber-card magnetic-target" data-tilt>
+          <div class="cyber-card-frame"></div>
+          <div class="card-hud-top"><span class="card-code">SEC-02 // TELEMETRÍA</span><span class="card-status-dot active"></span></div>
+          <div class="card-icon-hex"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg></div>
+          <h3 class="card-title">Monitoreo Electrónico 24/7</h3>
+          <p class="card-text">Cerebro de comando centralizado con algoritmos de analítica de video, reconocimiento facial y despacho inmediato.</p>
+          <ul class="card-features">
+            <li><span>✓</span> Transmisión en tiempo real 4K</li>
+            <li><span>✓</span> Detección automática de intrusos</li>
+            <li><span>✓</span> Cuadrante de reacción motorizado</li>
+          </ul>
+          <div class="card-action-bar"><a href="#cotizador" class="card-btn-action">CONFIGURAR SERVICIO <span>→</span></a></div>
+        </article>
+
+        <article class="cyber-card magnetic-target" data-tilt>
+          <div class="cyber-card-frame"></div>
+          <div class="card-hud-top"><span class="card-code">SEC-03 // ALTO NIVEL</span><span class="card-status-dot active"></span></div>
+          <div class="card-icon-hex"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3 class="card-title">Escolta Ejecutiva VIP</h3>
+          <p class="card-text">Protección de directivos y familias. Esquemas discretos de defensa personal, análisis dinámico de rutas y vehículos blindados.</p>
+          <ul class="card-features">
+            <li><span>✓</span> Conducción evasiva y defensiva</li>
+            <li><span>✓</span> Blindaje antibalístico certificado</li>
+            <li><span>✓</span> Discreción y diplomacia ejecutiva</li>
+          </ul>
+          <div class="card-action-bar"><a href="#cotizador" class="card-btn-action">CONFIGURAR SERVICIO <span>→</span></a></div>
+        </article>
+
+        <article class="cyber-card magnetic-target" data-tilt>
+          <div class="cyber-card-frame"></div>
+          <div class="card-hud-top"><span class="card-code">SEC-04 // ELECTRÓNICA</span><span class="card-status-dot active"></span></div>
+          <div class="card-icon-hex"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <h3 class="card-title">Seguridad Electrónica & IA</h3>
+          <p class="card-text">Barreras perimetrales microondas, control biométrico infrarrojo, cerraduras magnéticas y cable sensor de choque.</p>
+          <ul class="card-features">
+            <li><span>✓</span> Servidores redundantes locales y nube</li>
+            <li><span>✓</span> Cámaras térmicas infrarrojas FLIR</li>
+            <li><span>✓</span> Integración BMS e incendios</li>
+          </ul>
+          <div class="card-action-bar"><a href="#cotizador" class="card-btn-action">CONFIGURAR SERVICIO <span>→</span></a></div>
+        </article>
+
+        <article class="cyber-card magnetic-target" data-tilt>
+          <div class="cyber-card-frame"></div>
+          <div class="card-hud-top"><span class="card-code">SEC-05 // MÓVIL</span><span class="card-status-dot active"></span></div>
+          <div class="card-icon-hex"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="16" r="3"/><circle cx="19" cy="16" r="3"/><path d="M12 16h4l3-6h-4l-2 3h-3l-2-5H4"/></svg></div>
+          <h3 class="card-title">Patrullaje Motorizado GPS</h3>
+          <p class="card-text">Flota vehicular y motocicletas con rastreo satelital activo en tiempo real para rondas de supervisión continua.</p>
+          <ul class="card-features">
+            <li><span>✓</span> Botón de pánico inalámbrico</li>
+            <li><span>✓</span> Grabación DVR en cabina vehicular</li>
+            <li><span>✓</span> Tiempos de llegada cronometrados</li>
+          </ul>
+          <div class="card-action-bar"><a href="#cotizador" class="card-btn-action">CONFIGURAR SERVICIO <span>→</span></a></div>
+        </article>
+
+        <article class="cyber-card cyber-card-gold magnetic-target" data-tilt>
+          <div class="cyber-card-frame"></div>
+          <div class="card-hud-top"><span class="card-code">SEC-06 // PH & RESIDENCIAL</span><span class="card-status-dot active"></span></div>
+          <div class="card-icon-hex"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
+          <h3 class="card-title">Propiedad Horizontal VIP</h3>
+          <p class="card-text">Especialistas en copropiedades, parques industriales y centros de distribución. Atención protocolaria 5 estrellas.</p>
+          <ul class="card-features">
+            <li><span>✓</span> Software de control de visitantes</li>
+            <li><span>✓</span> Porteros con formación en servicio</li>
+            <li><span>✓</span> Asesoría jurídica en PH incluida</li>
+          </ul>
+          <div class="card-action-bar"><a href="#cotizador" class="card-btn-action">CONFIGURAR SERVICIO <span>→</span></a></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- YVENTU KINETIC MOVING RIBBON -->
+    <div class="yventu-kinetic-ribbon" aria-label="Letrero dinámico de operaciones">
+      <div class="kinetic-ribbon-track">
+        <div class="kinetic-ribbon-items">
+          <span class="ribbon-badge">ESTADO EN VIVO</span>
+          <span class="ribbon-title">CENTRAL DE MANDO Y OPERACIONES 24/7</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-accent">TIEMPO PROMEDIO DE REACCIÓN: 3.4 MIN</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-title">CUSTODIA ARMADA Y FLOTA MOTORIZADA CON GPS</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-accent">BLINDAJE BALÍSTICO CERTIFICADO SUPERVIGILANCIA</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-title">COBERTURA BOGOTÁ · MEDELLÍN · CALI · BARRANQUILLA</span>
+          <span class="ribbon-sep">✦</span>
+        </div>
+        <div class="kinetic-ribbon-items" aria-hidden="true">
+          <span class="ribbon-badge">ESTADO EN VIVO</span>
+          <span class="ribbon-title">CENTRAL DE MANDO Y OPERACIONES 24/7</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-accent">TIEMPO PROMEDIO DE REACCIÓN: 3.4 MIN</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-title">CUSTODIA ARMADA Y FLOTA MOTORIZADA CON GPS</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-accent">BLINDAJE BALÍSTICO CERTIFICADO SUPERVIGILANCIA</span>
+          <span class="ribbon-sep">✦</span>
+          <span class="ribbon-title">COBERTURA BOGOTÁ · MEDELLÍN · CALI · BARRANQUILLA</span>
+          <span class="ribbon-sep">✦</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="cotizador-section stage-deck" id="cotizador">
+      <div class="yventu-bg-marquee-wrap reverse" aria-hidden="true">
+        <div class="yventu-bg-marquee-track reverse">
+          <span class="bg-marquee-text">COTIZADOR EN LÍNEA ✦ SIMULACIÓN FINANCIERA EN VIVO ✦ TARIFAS SUPERVIGILANCIA ✦ RESPUESTA INMEDIATA ✦ ASESORÍA PERSONALIZADA ✦ </span>
+          <span class="bg-marquee-text">COTIZADOR EN LÍNEA ✦ SIMULACIÓN FINANCIERA EN VIVO ✦ TARIFAS SUPERVIGILANCIA ✦ RESPUESTA INMEDIATA ✦ ASESORÍA PERSONALIZADA ✦ </span>
+        </div>
+      </div>
+      <div class="cotizador-frame-hud">
+        <div class="section-head-hud text-center">
+          <div class="eyebrow-hud"><span class="hud-cross">+</span> SIMULADOR FINANCIERO EN VIVO <span class="hud-cross">+</span></div>
+          <h2 class="section-cyber-title">Simulador de Seguridad <span class="gold-gradient">& Costos en Tiempo Real</span></h2>
+          <p class="section-cyber-desc">Ajusta las variables operativas y obtén una estimación instantánea para presentar a gerencia o enviar a WhatsApp.</p>
+        </div>
+
+        <div class="cotizador-grid">
+          <div class="cotizador-controls">
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <label for="range-puestos">Puestos de Vigilancia Física:</label>
+                <span class="slider-val-badge" id="val-puestos">2 Puestos</span>
+              </div>
+              <input type="range" id="range-puestos" min="1" max="20" value="2" class="cyber-range">
+              <div class="range-ticks"><span>1</span><span>5</span><span>10</span><span>15</span><span>20+</span></div>
+            </div>
+
+            <div class="input-group-cyber">
+              <label>Turno Operativo:</label>
+              <div class="radio-chips-cyber" id="turn-chips">
+                <button type="button" class="chip-btn active" data-turn="24">24 Horas (3 Turnos)</button>
+                <button type="button" class="chip-btn" data-turn="12">12 Horas Diurno/Nocturno</button>
+              </div>
+            </div>
+
+            <div class="input-group-cyber">
+              <label>Módulos de Seguridad Complementarios:</label>
+              <div class="cyber-checkbox-list">
+                <label class="cyber-check-label">
+                  <input type="checkbox" id="addon-cctv" checked>
+                  <span class="check-box-visual"></span>
+                  <span>CCTV Remoto con IA & Monitoreo (+ $850.000/mes)</span>
+                </label>
+                <label class="cyber-check-label">
+                  <input type="checkbox" id="addon-canino">
+                  <span class="check-box-visual"></span>
+                  <span>Unidad Canina Antiexplosivos (+ $1.400.000/mes)</span>
+                </label>
+                <label class="cyber-check-label">
+                  <input type="checkbox" id="addon-patrulla" checked>
+                  <span class="check-box-visual"></span>
+                  <span>Rondas Motorizadas GPS (+ $500.000/mes)</span>
+                </label>
+                <label class="cyber-check-label">
+                  <input type="checkbox" id="addon-escolta">
+                  <span class="check-box-visual"></span>
+                  <span>Escolta de Apoyo Turno Crítico (+ $2.200.000/mes)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="cotizador-summary">
+            <div class="summary-hud-card">
+              <div class="summary-top">
+                <span class="summary-title">RESUMEN DE PROPUESTA TÉCNICA</span>
+                <span class="summary-status"><span class="pulse-indicator"></span> EN LÍNEA</span>
+              </div>
+
+              <div class="summary-specs-list">
+                <div class="spec-item"><span>PUESTOS BASE:</span> <strong id="sum-puestos">2 Puestos 24H</strong></div>
+                <div class="spec-item"><span>COBERTURA:</span> <strong id="sum-horas">24/7 Continuo (720 hrs/mes)</strong></div>
+                <div class="spec-item"><span>SUPERVISIÓN:</span> <strong id="sum-addons">CCTV Remoto + Rondas GPS</strong></div>
+                <div class="spec-item"><span>PÓLIZA DE SEGURO:</span> <strong class="text-cyan">INCLUIDA (Hasta $1.000M)</strong></div>
+              </div>
+
+              <div class="summary-divider"></div>
+
+              <div class="summary-price-box">
+                <span class="price-label">VALOR ESTIMADO MENSUAL (COP)</span>
+                <div class="price-number" id="display-price">$ 11.850.000</div>
+                <span class="price-note">*Tarifas base reguladas según SuperVigilancia + IVA</span>
+              </div>
+
+              <div class="summary-buttons">
+                <button id="btn-send-quote-wa" class="btn-hud-whatsapp full-w">
+                  <span>ENVIAR COTIZACIÓN A WHATSAPP</span>
+                  <span>→</span>
+                </button>
+                <a href="#contacto" class="btn-hud-gold full-w text-center">
+                  <span>AGENDAR VISITA TÉCNICA GRATUITA</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="cctv-command-section stage-deck" id="monitoreo">
+      <div class="section-head-hud">
+        <div class="eyebrow-hud"><span class="hud-cross">+</span> SALA DE OPERACIONES EN VIVO <span class="hud-cross">+</span></div>
+        <h2 class="section-cyber-title">Central de Monitoreo <span class="gold-gradient">& Supervisión Electrónica 24/7</span></h2>
+        <p class="section-cyber-desc">Supervisión activa multipunto con reconocimiento biométrico, detección perimetral y enlace directo con autoridades.</p>
+      </div>
+
+      <div class="cctv-terminal-hud">
+        <div class="cctv-terminal-bar">
+          <div class="terminal-tabs">
+            <button class="cam-tab active" data-cam="all">VISTA MATRIZ [4 CAM]</button>
+            <button class="cam-tab" data-cam="1">CAM-01: PERÍMETRO</button>
+            <button class="cam-tab" data-cam="2">CAM-02: BÓVEDA</button>
+            <button class="cam-tab" data-cam="3">CAM-03: ACCESO VIP</button>
+            <button class="cam-tab" data-cam="4">CAM-04: OJO BIOMÉTRICO 👁️</button>
+          </div>
+          <div class="terminal-controls">
+            <button id="toggle-thermal" class="hud-tool-btn"><span class="ico"><svg class="hud-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span> MODO TÉRMICO</button>
+            <button id="toggle-night" class="hud-tool-btn"><span class="ico"><svg class="hud-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> VISIÓN NOCTURNA</button>
+            <span class="terminal-clock" id="cctv-clock">16:40:22 GMT-5</span>
+          </div>
+        </div>
+
+        <div class="cctv-grid-wrapper" id="cctvGrid">
+          <div class="feed-box feed-1" id="feed1">
+            <div class="feed-hud-overlay">
+              <div class="feed-tag"><span class="rec-dot"></span> REC · CAM 01 [ACCESO NORTE]</div>
+              <div class="feed-meta">FPS: 60 · BITRATE: 12Mbps</div>
+            </div>
+            <div class="feed-content-sim">
+              <div class="sim-grid-lines"></div>
+              <div class="sim-tracking-box" style="top: 35%; left: 40%; width: 90px; height: 120px;">
+                <span class="track-label">SUJETO AUTORIZADO #481</span>
+                <span class="track-acc">CONF: 99.4%</span>
+              </div>
+              <div class="feed-crosshair"></div>
+            </div>
+            <div class="feed-footer-telemetry">
+              <span>SENSOR PIR: ACTIVO</span>
+              <span>ZOOM: 1.0X</span>
+            </div>
+          </div>
+
+          <div class="feed-box feed-2" id="feed2">
+            <div class="feed-hud-overlay">
+              <div class="feed-tag"><span class="rec-dot"></span> REC · CAM 02 [ZONA PERIMETRAL]</div>
+              <div class="feed-meta">RADAR: OK</div>
+            </div>
+            <div class="feed-content-sim">
+              <div class="sim-grid-lines"></div>
+              <div class="sim-radar-sweep"></div>
+              <div class="sim-tracking-box" style="top: 50%; left: 65%; width: 75px; height: 60px;">
+                <span class="track-label">VEHÍCULO PATRULLA #03</span>
+              </div>
+              <div class="feed-crosshair"></div>
+            </div>
+            <div class="feed-footer-telemetry">
+              <span>BARRERA IR: NORMAL</span>
+              <span>GEO-ZONA: ALPHA</span>
+            </div>
+          </div>
+
+          <div class="feed-box feed-3" id="feed3">
+            <div class="feed-hud-overlay">
+              <div class="feed-tag"><span class="rec-dot"></span> REC · CAM 03 [LOBBY CORPORATIVO]</div>
+              <div class="feed-meta">BIOMETRÍA FACIAL: ON</div>
+            </div>
+            <div class="feed-content-sim">
+              <div class="sim-grid-lines"></div>
+              <div class="sim-tracking-box" style="top: 25%; left: 20%; width: 110px; height: 140px;">
+                <span class="track-label">OFICIAL SERUMA 01</span>
+                <span class="track-acc">ARMADO: SÍ</span>
+              </div>
+              <div class="feed-crosshair"></div>
+            </div>
+            <div class="feed-footer-telemetry">
+              <span>TORNIQUETES: CONECTADOS</span>
+              <span>FLUJO: MODERADO</span>
+            </div>
+          </div>
+
+          <div class="feed-box feed-4" id="feed4">
+            <div class="feed-hud-overlay">
+              <div class="feed-tag"><span class="rec-dot"></span> REC · CAM 04 [OJO BIOMÉTRICO IA · SEGUIMIENTO DE CURSOR]</div>
+              <div class="feed-meta" id="cctvEyeMeta">IA VIGILANCIA 360°</div>
+            </div>
+            <div class="feed-content-sim feed-eye-sim" id="cctvEyeContainer">
+              <canvas id="cctvEyeCanvas" width="640" height="360" class="cctv-eye-canvas" title="Haz clic para escaneo biométrico"></canvas>
+              <div class="sim-grid-lines"></div>
+              <div class="sim-laser-sweep"></div>
+              <div class="sim-tracking-box cctv-eye-target-box" id="cctvEyeBox" style="top: 38%; left: 42%; width: 110px; height: 110px;">
+                <span class="track-label">IDENT: RETINA VIP</span>
+                <span class="track-acc" id="cctvAcc">LOCK: 99.8%</span>
+              </div>
+              <div class="feed-crosshair"></div>
+            </div>
+            <div class="feed-footer-telemetry">
+              <span id="cctvEyeTrackingStatus">SENSOR IA: RASTREANDO CURSOR</span>
+              <span id="cctvEyeAngle">ÁNGULO: 0° · ACTIVO</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cctv-console-log-ticker" aria-label="Telemetría en tiempo real">
+          <div class="cctv-ticker-badge"><span class="live-dot"></span> FEED TÁCTICO EN VIVO</div>
+          <div class="cctv-ticker-track">
+            <div class="cctv-ticker-items">
+              <span class="c-log-tag">[CAM-01]</span> Perímetro norte verificado vía sensor PIR térmico.
+              <span class="c-sep">|</span>
+              <span class="c-status-tag">[REACCIÓN]</span> Patrulla motorizada M-04 en cuadrante Chapinero / Chico.
+              <span class="c-sep">|</span>
+              <span class="c-link-tag">[ENLACE]</span> Transmisión satelital encriptada 256-bit AES activa.
+              <span class="c-sep">|</span>
+              <span class="c-log-tag">[NFC PASS]</span> Ronda de supervisor completada en punto de control 18.
+              <span class="c-sep">|</span>
+              <span class="c-status-tag">[SISTEMA]</span> Central de despacho SERUMA operativa al 100%.
+              <span class="c-sep">|</span>
+            </div>
+            <div class="cctv-ticker-items" aria-hidden="true">
+              <span class="c-log-tag">[CAM-01]</span> Perímetro norte verificado vía sensor PIR térmico.
+              <span class="c-sep">|</span>
+              <span class="c-status-tag">[REACCIÓN]</span> Patrulla motorizada M-04 en cuadrante Chapinero / Chico.
+              <span class="c-sep">|</span>
+              <span class="c-link-tag">[ENLACE]</span> Transmisión satelital encriptada 256-bit AES activa.
+              <span class="c-sep">|</span>
+              <span class="c-log-tag">[NFC PASS]</span> Ronda de supervisor completada en punto de control 18.
+              <span class="c-sep">|</span>
+              <span class="c-status-tag">[SISTEMA]</span> Central de despacho SERUMA operativa al 100%.
+              <span class="c-sep">|</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="coverage-radar-section stage-deck" id="cobertura">
+      <div class="section-head-hud">
+        <div class="eyebrow-hud"><span class="hud-cross">+</span> DESPLIEGUE ESTRATÉGICO NACIONAL <span class="hud-cross">+</span></div>
+        <h2 class="section-cyber-title">Cobertura Operacional <span class="gold-gradient">en Colombia</span></h2>
+        <p class="section-cyber-desc">Puntos nodales de operación táctica y centros de respuesta inmediata en las principales regiones.</p>
+      </div>
+
+      <div class="coverage-container">
+        <div class="map-radar-wrapper">
+          <div class="radar-sonar-rings"></div>
+          <svg class="colombia-svg-radar" viewBox="0 0 320 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="map-poly" d="M155,18 L180,28 L198,24 L220,38 L232,58 L220,78 L232,96 L226,118 L242,138 L236,158 L222,176 L230,198 L218,218 L208,238 L198,258 L188,278 L178,298 L168,318 L158,338 L148,358 L138,338 L128,318 L118,298 L108,278 L98,258 L88,238 L78,218 L68,198 L58,178 L48,158 L54,138 L48,118 L58,98 L52,78 L64,58 L74,38 L98,28 L120,24 Z"/>
+            
+            <g class="map-node node-active" data-city="BOGOTÁ D.C." data-units="48 Patrullas" data-desc="Sede Matriz Central · Centro de Comando 24/7">
+              <circle cx="152" cy="200" r="8" class="node-pulse-big"/>
+              <circle cx="152" cy="200" r="4" class="node-core gold-node"/>
+              <text x="164" y="204" class="node-text gold-text">BOGOTÁ (HQ)</text>
+            </g>
+            <g class="map-node" data-city="MEDELLÍN" data-units="26 Patrullas" data-desc="Base Regional Antioquia · Vigilancia y Escolta VIP">
+              <circle cx="112" cy="158" r="6" class="node-pulse"/>
+              <circle cx="112" cy="158" r="3" class="node-core"/>
+              <text x="122" y="162" class="node-text">MEDELLÍN</text>
+            </g>
+            <g class="map-node" data-city="CALI" data-units="20 Patrullas" data-desc="Base Valle del Cauca · Seguridad Industrial">
+              <circle cx="96" cy="228" r="6" class="node-pulse"/>
+              <circle cx="96" cy="228" r="3" class="node-core"/>
+              <text x="55" y="232" class="node-text">CALI</text>
+            </g>
+            <g class="map-node" data-city="BARRANQUILLA" data-units="18 Patrullas" data-desc="Base Atlántico · Seguridad Portuaria">
+              <circle cx="132" cy="62" r="6" class="node-pulse"/>
+              <circle cx="132" cy="62" r="3" class="node-core"/>
+              <text x="142" y="66" class="node-text">BARRANQUILLA</text>
+            </g>
+            <g class="map-node" data-city="CARTAGENA" data-units="15 Patrullas" data-desc="Base Bolívar · Protección Turística">
+              <circle cx="106" cy="56" r="6" class="node-pulse"/>
+              <circle cx="106" cy="56" r="3" class="node-core"/>
+              <text x="40" y="58" class="node-text">CARTAGENA</text>
+            </g>
+            <g class="map-node" data-city="BUCARAMANGA" data-units="12 Patrullas" data-desc="Base Santander · Custodia y Minería">
+              <circle cx="154" cy="132" r="6" class="node-pulse"/>
+              <circle cx="154" cy="132" r="3" class="node-core"/>
+              <text x="166" y="136" class="node-text">BUCARAMANGA</text>
+            </g>
+          </svg>
+
+          <div class="radar-tooltip" id="radarTooltip">
+            <div class="tip-city" id="tipCity">BOGOTÁ D.C.</div>
+            <div class="tip-units" id="tipUnits">48 Unidades Móviles</div>
+            <div class="tip-desc" id="tipDesc">Sede Central de Operaciones Tácticas</div>
+          </div>
+        </div>
+
+        <div class="coverage-info-panel">
+          <div class="info-panel-hud-card">
+            <div class="hud-card-header">
+              <span class="card-title-sm">TELEMETRÍA DE COBERTURA</span>
+              <span class="badge-gold">OPERACIÓN ACTIVA</span>
+            </div>
+            <p class="coverage-lead">Nuestra capacidad logística permite el despliegue de esquemas de seguridad en tiempo récord en las principales zonas de Colombia.</p>
+            
+            <div class="city-telemetry-list">
+              <div class="city-bar-row active">
+                <div class="city-bar-label">
+                  <strong>Bogotá & Sabana</strong>
+                  <span>HQ Central · Reacción &lt; 3 min</span>
+                </div>
+                <div class="city-bar-track"><div class="city-bar-fill" style="width: 98%"></div></div>
+              </div>
+              <div class="city-bar-row">
+                <div class="city-bar-label">
+                  <strong>Medellín & Antioquia</strong>
+                  <span>Base Metropolitana · Reacción &lt; 4 min</span>
+                </div>
+                <div class="city-bar-track"><div class="city-bar-fill" style="width: 92%"></div></div>
+              </div>
+              <div class="city-bar-row">
+                <div class="city-bar-label">
+                  <strong>Cali & Suroccidente</strong>
+                  <span>Base Industrial · Reacción &lt; 5 min</span>
+                </div>
+                <div class="city-bar-track"><div class="city-bar-fill" style="width: 86%"></div></div>
+              </div>
+              <div class="city-bar-row">
+                <div class="city-bar-label">
+                  <strong>Costa Caribe (B/quilla & C/gena)</strong>
+                  <span>Eje Portuario · Reacción &lt; 4 min</span>
+                </div>
+                <div class="city-bar-track"><div class="city-bar-fill" style="width: 90%"></div></div>
+              </div>
+            </div>
+
+            <div class="coverage-cta-banner">
+              <span>¿Su empresa opera en otra ciudad o municipio?</span>
+              <a href="#contacto" class="link-arrow-gold">Solicitar estudio de factibilidad <span>→</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials-cyber-section" id="testimonios">
+      <div class="section-head-hud">
+        <div class="eyebrow-hud"><span class="hud-cross">+</span> TESTIMONIOS CERTIFICADOS <span class="hud-cross">+</span></div>
+        <h2 class="section-cyber-title">Confianza Institucional <span class="gold-gradient">& Casos de Éxito</span></h2>
+        <p class="section-cyber-desc">Líderes empresariales y administradores confirman la efectividad y solidez de SERUMA.</p>
+      </div>
+
+      <div class="carousel-cyber-container">
+        <div class="carousel-track-wrap">
+          <div class="carousel-track" id="testiTrack">
+            <div class="testi-slide active">
+              <div class="testi-hud-box">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-quote">
+                  "La transformación en seguridad desde que SERUMA asumió el control de nuestros centros logísticos fue total. Su capacidad de reacción inmediata y la calidad del personal armado nos dan absoluta tranquilidad."
+                </p>
+                <div class="testi-author-row">
+                  <div class="author-avatar-badge">CR</div>
+                  <div class="author-meta">
+                    <strong>Ing. Carlos Rodríguez</strong>
+                    <span>Vicepresidente de Operaciones · Grupo Industrial Andino</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testi-slide">
+              <div class="testi-hud-box">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-quote">
+                  "En más de 400 apartamentos, la tranquilidad de los residentes es lo primordial. SERUMA no es un proveedor, es nuestro socio estratégico: cero incidentes en 3 años consecutivos."
+                </p>
+                <div class="testi-author-row">
+                  <div class="author-avatar-badge">ML</div>
+                  <div class="author-meta">
+                    <strong>Dra. María Fernanda López</strong>
+                    <span>Gerente de Copropiedad · Conjunto Residencial Alturas del Pinar</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testi-slide">
+              <div class="testi-hud-box">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-quote">
+                  "El esquema de escolta ejecutiva blindada que nos prestan en Bogotá y Medellín cumple con los más exigentes estándares internacionales. Máxima discreción y profesionalismo implacable."
+                </p>
+                <div class="testi-author-row">
+                  <div class="author-avatar-badge">AM</div>
+                  <div class="author-meta">
+                    <strong>Andrés Martínez V.</strong>
+                    <span>Chief Executive Officer · Firma Financiera Multilateral</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-nav-controls">
+          <button class="car-btn" id="carPrev" aria-label="Anterior">←</button>
+          <div class="car-indicators" id="carDots">
+            <span class="car-dot active" data-index="0"></span>
+            <span class="car-dot" data-index="1"></span>
+            <span class="car-dot" data-index="2"></span>
+          </div>
+          <button class="car-btn" id="carNext" aria-label="Siguiente">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-dispatch-section stage-deck" id="contacto">
+      <div class="contact-grid-container">
+        <div class="dispatch-info-col">
+          <div class="eyebrow-hud"><span class="hud-cross">+</span> CANAL OFICIAL DIRECTO <span class="hud-cross">+</span></div>
+          <h2 class="section-cyber-title">Contrate la Seguridad <span class="gold-gradient">de su Empresa</span></h2>
+          <p class="contact-lead-desc">
+            Un director de operaciones de SERUMA se comunicará de manera confidencial en menos de 15 minutos hábiles para coordinar su plan de seguridad.
+          </p>
+
+          <div class="dispatch-cards-list">
+            <a href="tel:+573001234567" class="dispatch-card-link magnetic-target">
+              <div class="disp-icon"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+              <div class="disp-info">
+                <span class="disp-lbl">LÍNEA NACIONAL DE OPERACIONES</span>
+                <strong class="disp-val">+57 (300) 123-4567</strong>
+              </div>
+            </a>
+
+            <a href="mailto:gerencia@seruma.com.co" class="dispatch-card-link magnetic-target">
+              <div class="disp-icon"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+              <div class="disp-info">
+                <span class="disp-lbl">CORREO INSTITUCIONAL</span>
+                <strong class="disp-val">gerencia@seruma.com.co</strong>
+              </div>
+            </a>
+
+            <div class="dispatch-card-link">
+              <div class="disp-icon"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
+              <div class="disp-info">
+                <span class="disp-lbl">DIRECCIÓN PRINCIPAL</span>
+                <strong class="disp-val">Torre Empresarial Calle 100 #19-61, Bogotá D.C.</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="emergency-banner-hud">
+            <div class="em-pulse"></div>
+            <div>
+              <strong>CENTRAL DE MONITOREO DE ALARMAS</strong>
+              <p>Línea exclusiva para clientes activos: 01 8000 912 345</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dispatch-form-col">
+          <div class="form-hud-wrapper">
+            <div class="form-hud-header">
+              <span class="form-hud-title">SOLICITUD DE AUDITORÍA & COTIZACIÓN</span>
+              <span class="form-hud-sec"><span class="lock-icon"><svg class="hud-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> CIFRADO SSL 256-BIT</span>
+            </div>
+
+            <form id="leadForm" class="cyber-form" novalidate>
+              <div class="form-row-2">
+                <div class="form-field">
+                  <label for="f-name">Nombre y Apellidos *</label>
+                  <input type="text" id="f-name" required placeholder="Ej. Dr. Mauricio Gómez" class="cyber-input">
+                </div>
+                <div class="form-field">
+                  <label for="f-company">Empresa o Copropiedad *</label>
+                  <input type="text" id="f-company" required placeholder="Ej. Edificio Torre Titanium" class="cyber-input">
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-field">
+                  <label for="f-email">Correo Corporativo *</label>
+                  <input type="email" id="f-email" required placeholder="mauricio@titanium.com" class="cyber-input">
+                </div>
+                <div class="form-field">
+                  <label for="f-phone">Teléfono / Celular *</label>
+                  <input type="tel" id="f-phone" required placeholder="+57 310 000 0000" class="cyber-input">
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="f-service">Servicio Requerido Principal</label>
+                <select id="f-service" class="cyber-input cyber-select">
+                  <option value="Vigilancia Física Armada">Vigilancia Física Armada (Puestos Fijos)</option>
+                  <option value="Monitoreo Electrónico & CCTV">Monitoreo Electrónico & CCTV con IA</option>
+                  <option value="Escolta Ejecutiva VIP">Escolta Ejecutiva VIP & Blindados</option>
+                  <option value="Seguridad para Propiedad Horizontal">Seguridad para Propiedad Horizontal</option>
+                  <option value="Patrullaje Móvil & Supervisión">Patrullaje Móvil & Supervisión Satelital</option>
+                  <option value="Auditoría de Vulnerabilidad Integral">Auditoría de Vulnerabilidad Integral</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="f-message">Detalles de la Operación / Ciudad</label>
+                <textarea id="f-message" rows="3" placeholder="Indique ciudad, cantidad de puestos o necesidades específicas..." class="cyber-input cyber-textarea"></textarea>
+              </div>
+
+              <button type="submit" id="btnSubmitForm" class="btn-cyber-submit magnetic-target">
+                <span class="submit-text">TRANSMITIR SOLICITUD PRIORITARIA</span>
+                <span class="submit-icon">→</span>
+              </button>
+
+              <div id="formFeedback" class="form-feedback-hud" hidden>
+                <div class="feedback-icon">✓</div>
+                <div>
+                  <h4>TRANSMISIÓN EXITOSA</h4>
+                  <p>Su solicitud ha sido registrada en el Centro de Operaciones. Un director de seguridad se comunicará en breve.</p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-hud-divider"></div>
+    <div class="footer-container">
+      <div class="footer-brand-col">
+        <img src="LOGO/cropped-Recurso-3@180x.webp" alt="SERUMA" class="footer-logo-img">
+        <p class="footer-brand-text">
+          <strong>GRUPO EMPRESARIAL SERUMA</strong><br>
+          "Su aliado estratégico en seguridad y vigilancia privada". Vigilado por la Superintendencia de Vigilancia y Seguridad Privada de Colombia.
+        </p>
+        <div class="footer-socials">
+          <a href="#" class="soc-btn" title="LinkedIn">IN</a>
+          <a href="#" class="soc-btn" title="Instagram">IG</a>
+          <a href="#" class="soc-btn" title="Facebook">FB</a>
+          <a href="https://wa.me/573001234567" class="soc-btn" title="WhatsApp">WA</a>
+        </div>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">SERVICIOS TÁCTICOS</h4>
+        <ul>
+          <li><a href="#servicios">Vigilancia Física</a></li>
+          <li><a href="#servicios">Monitoreo Electrónico 24/7</a></li>
+          <li><a href="#servicios">Escolta Ejecutiva VIP</a></li>
+          <li><a href="#servicios">Seguridad Electrónica & IA</a></li>
+          <li><a href="#servicios">Patrullaje Motorizado GPS</a></li>
+          <li><a href="#servicios">Propiedad Horizontal</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">CENTRO DE CONTROL</h4>
+        <ul>
+          <li><a href="#hero">Entorno 3D Interactivo</a></li>
+          <li><a href="#cotizador">Cotizador en Línea</a></li>
+          <li><a href="#monitoreo">Sala de Cámaras CCTV</a></li>
+          <li><a href="#cobertura">Mapa de Despliegue</a></li>
+          <li><a href="#testimonios">Casos de Éxito</a></li>
+          <li><a href="#contacto">Contacto & Soporte</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact-col">
+        <h4 class="footer-col-title">CONTACTO CORPORATIVO</h4>
+        <p class="f-detail"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Calle 100 #19-61, Bogotá D.C., Colombia</p>
+        <p class="f-detail"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Central: +57 (300) 123-4567</p>
+        <p class="f-detail"><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Correo: info@seruma.com.co</p>
+        <div class="footer-supervigilancia-badge">
+          <span><svg class="hud-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg> HABILITADO POR SUPERVIGILANCIA</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="footer-bottom-container">
+        <span>© <span id="year-span">2026</span> GRUPO EMPRESARIAL SERUMA. Todos los derechos reservados.</span>
+        <div class="footer-legal-links">
+          <a href="#">Política de Privacidad y Habeas Data</a>
+          <span>·</span>
+          <a href="#">Términos de Servicio</a>
+          <span>·</span>
+          <a href="#">Certificaciones de Calidad</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/573001234567?text=Hola%20SERUMA%2C%20solicito%20atencion%20inmediata" target="_blank" rel="noopener" class="floating-hud-wa magnetic-target" aria-label="WhatsApp Emergencia 24/7">
+    <div class="floating-wa-aura"></div>
+    <div class="floating-wa-core">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </div>
+    <span class="floating-wa-tag">DISPATCH VIP</span>
+  </a>
+
+  <script src="app.js"></script>
+</body>
+</html>

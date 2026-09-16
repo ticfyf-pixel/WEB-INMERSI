@@ -1,0 +1,210 @@
+﻿import React, { useState, useEffect } from 'react';
+import { ArrowRight, Play } from 'lucide-react';
+
+export default function AtelierHero() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navItems = [
+    { name: 'Projects', href: '#projects' },
+    { name: 'Expertise', href: '#expertise' },
+    { name: 'Studio', href: '#studio' },
+    { name: 'Insights', href: '#insights' },
+  ];
+
+  const allMobileItems = [
+    ...navItems,
+    { name: 'Reach Out', href: '#reach-out' },
+  ];
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  return (
+    <section className="relative w-full h-screen overflow-hidden bg-black select-none">
+      {/* Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204103_f607742e-09da-4cf5-bb06-4e67b0a531de.mp4"
+      />
+
+      {/* Foreground Content Wrapper */}
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Navbar */}
+        <header className="w-full flex items-center justify-between px-6 md:px-12 lg:px-16 py-5 md:py-6">
+          {/* Left Side: Logo + Desktop Nav Links */}
+          <div className="flex items-center gap-10 lg:gap-14">
+            <a
+              href="#"
+              className="text-white font-semibold text-lg tracking-tight font-sans"
+            >
+              Atelier
+            </a>
+            <nav className="hidden md:flex items-center gap-8">
+              {navItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-white/80 hover:text-white text-sm font-light transition-colors duration-200"
+                >
+                  {item.name}
+                </a>
+              ))}
+            </nav>
+          </div>
+
+          {/* Right Side: Reach Out + Let's Talk + Mobile Hamburger */}
+          <div className="flex items-center gap-6">
+            <a
+              href="#reach-out"
+              className="hidden md:block text-white/80 hover:text-white text-sm font-light transition-colors duration-200"
+            >
+              Reach Out
+            </a>
+            <a
+              href="#lets-talk"
+              className="hidden md:inline-flex items-center justify-center bg-white text-black font-sans font-medium text-sm rounded-full px-5 py-2 hover:bg-white/90 transition-colors duration-200"
+            >
+              Let's Talk
+            </a>
+
+            {/* Hamburger Button (Mobile only) */}
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              className="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5 focus:outline-none z-50 cursor-pointer"
+            >
+              <span
+                style={{ transitionTimingFunction: 'cubic-bezier(0.76,0,0.24,1)' }}
+                className={`h-[2px] bg-white rounded-full transition-all duration-500 ${
+                  isMenuOpen ? 'w-6 rotate-45 translate-y-[8px]' : 'w-6'
+                }`}
+              />
+              <span
+                style={{ transitionTimingFunction: 'cubic-bezier(0.76,0,0.24,1)' }}
+                className={`h-[2px] bg-white rounded-full transition-all duration-500 ${
+                  isMenuOpen ? 'w-4 opacity-0' : 'w-4 opacity-100'
+                }`}
+              />
+              <span
+                style={{ transitionTimingFunction: 'cubic-bezier(0.76,0,0.24,1)' }}
+                className={`h-[2px] bg-white rounded-full transition-all duration-500 ${
+                  isMenuOpen ? 'w-6 -rotate-45 -translate-y-[8px]' : 'w-6'
+                }`}
+              />
+            </button>
+          </div>
+        </header>
+
+        {/* Mobile Menu Overlay (fixed inset-0 z-50, md:hidden) */}
+        <div
+          style={{ transitionTimingFunction: 'cubic-bezier(0.76,0,0.24,1)' }}
+          className={`fixed inset-0 z-40 md:hidden flex flex-col justify-between px-6 py-6 transition-all duration-700 ${
+            isMenuOpen
+              ? 'opacity-100 pointer-events-auto bg-black/90 backdrop-blur-xl'
+              : 'opacity-0 pointer-events-none bg-black/0 backdrop-blur-none'
+          }`}
+        >
+          {/* Header inside overlay */}
+          <div className="w-full flex items-center justify-between">
+            <span className="text-white font-semibold text-lg tracking-tight font-sans">
+              Atelier
+            </span>
+            <div className="w-8 h-8" />
+          </div>
+
+          {/* Stacked Nav Links */}
+          <div className="flex flex-col items-center justify-center my-auto w-full max-w-sm mx-auto">
+            {allMobileItems.map((item, index) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                style={{
+                  transitionTimingFunction: 'cubic-bezier(0.76,0,0.24,1)',
+                  transitionDelay: isMenuOpen ? `${150 + index * 80}ms` : '0ms',
+                }}
+                className={`w-full text-center text-4xl sm:text-5xl font-instrument-serif text-white border-b border-white/10 py-4 transition-all duration-500 hover:pl-4 ${
+                  isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+
+          {/* Footer Let's Talk Button */}
+          <div
+            style={{
+              transitionTimingFunction: 'cubic-bezier(0.76,0,0.24,1)',
+              transitionDelay: isMenuOpen ? '550ms' : '0ms',
+            }}
+            className={`w-full transition-all duration-500 ${
+              isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+            }`}
+          >
+            <a
+              href="#lets-talk"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full inline-flex items-center justify-center bg-white text-black font-sans font-medium text-base rounded-full py-4 shadow-lg hover:bg-white/90 transition-colors"
+            >
+              Let's Talk
+            </a>
+          </div>
+        </div>
+
+        {/* Hero Content (centered below navbar) */}
+        <div className="flex-1 flex flex-col items-center justify-start pt-4 sm:pt-6 md:pt-8 lg:pt-10 px-6 text-center">
+          {/* Heading */}
+          <h1 className="font-instrument-serif text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] max-w-5xl">
+            UX <span className="italic font-instrument-serif">and</span> APP<br />
+            DESIGN <span className="italic font-instrument-serif">for</span> BOLD<br />
+            VENTURES
+          </h1>
+
+          {/* Subtext */}
+          <p className="mt-4 md:mt-5 text-white/70 text-sm md:text-base font-light max-w-md leading-relaxed">
+            We shape digital products that define brands
+            <br className="hidden sm:block" />
+            {' '}and unlock exponential growth.
+          </p>
+
+          {/* Buttons Row */}
+          <div className="mt-5 md:mt-6 flex flex-col sm:flex-row items-center gap-4">
+            {/* Primary CTA */}
+            <a
+              href="#cases"
+              className="group inline-flex items-center gap-2 bg-white text-black font-sans font-medium text-sm rounded-full px-7 py-3 hover:bg-white/90 transition-all duration-200 shadow-md"
+            >
+              <span>See Cases</span>
+              <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">
+                <ArrowRight className="w-4 h-4" />
+              </span>
+            </a>
+
+            {/* Secondary CTA */}
+            <a
+              href="#reel"
+              className="inline-flex items-center gap-2 transparent border border-white/40 text-white font-sans text-sm rounded-full px-7 py-3 hover:bg-white/10 hover:border-white/60 transition-all duration-200"
+            >
+              <Play className="w-3.5 h-3.5 fill-white" />
+              <span>Watch Reel</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
