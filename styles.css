@@ -3,29 +3,29 @@
    ========================================================================== */
 
 :root {
-  --bg-obsidian: #06080C;
-  --bg-surface-1: #0A0D15;
-  --bg-surface-2: #101622;
-  --bg-card: rgba(13, 19, 31, 0.72);
-  --bg-card-hover: rgba(19, 27, 44, 0.88);
+  --bg-obsidian: #0B0E13;
+  --bg-surface-1: #11151C;
+  --bg-surface-2: #171C26;
+  --bg-card: rgba(18, 22, 30, 0.88);
+  --bg-card-hover: rgba(24, 29, 38, 0.94);
 
-  --gold-primary: #C9A227;
-  --gold-light: #EAC657;
-  --gold-glow: rgba(201, 162, 39, 0.35);
-  --gold-border: rgba(201, 162, 39, 0.22);
+  --gold-primary: #C4A574;
+  --gold-light: #E0CFA8;
+  --gold-glow: rgba(196, 165, 116, 0.12);
+  --gold-border: rgba(196, 165, 116, 0.28);
 
-  --navy-deep: #0C1A30;
-  --navy-bright: #1B3A6B;
-  --cyan-accent: #00E5FF;
-  --cyan-glow: rgba(0, 229, 255, 0.3);
+  --navy-deep: #0B0E13;
+  --navy-bright: #1C2430;
+  --cyan-accent: #C4A574;
+  --cyan-glow: rgba(196, 165, 116, 0.1);
 
-  --text-white: #F5F7FA;
-  --text-muted: #8E9BAE;
-  --text-dim: #546073;
+  --text-white: #F4F1EA;
+  --text-muted: #A8B0BC;
+  --text-dim: #6F7784;
 
   --font-serif: 'Playfair Display', Georgia, serif;
-  --font-tech: 'Space Grotesk', monospace, sans-serif;
-  --font-display: 'Syne', sans-serif;
+  --font-tech: 'Inter', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
   --font-ui: 'Inter', system-ui, sans-serif;
 
   --hud-radius: 12px;

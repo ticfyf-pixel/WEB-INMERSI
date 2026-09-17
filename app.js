@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. WEB AUDIO API SYNTHESIZER (Sci-Fi Sound FX)
   // -------------------------------------------------------------------------
   let audioCtx = null;
-  let soundEnabled = true;
+  let soundEnabled = false;
 
   function initAudio() {
     if (!audioCtx) {
@@ -401,7 +401,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const h = String(now.getHours()).padStart(2, '0');
     const m = String(now.getMinutes()).padStart(2, '0');
     const s = String(now.getSeconds()).padStart(2, '0');
-    if (cctvClock) cctvClock.textContent = `${h}:${m}:${s} GMT-5`;
+    if (cctvClock) cctvClock.textContent = `${h}:${m}:${s}`;
+    const feedTs = document.getElementById('feed1-ts');
+    if (feedTs) feedTs.textContent = `${h}:${m}:${s}`;
   }
   setInterval(updateCCTVClock, 1000);
   updateCCTVClock();
@@ -685,12 +687,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── 6 IMMERSIVE 3D STAGE DECKS ──
   const STAGES = [
-    { id: 'hero',       name: 'INICIO',         targetFrame: 0,  label: 'VENTANA 01/06 · VISTA PERIMETRAL EXTERIOR' },
-    { id: 'servicios',  name: 'SERVICIOS',      targetFrame: 10, label: 'VENTANA 02/06 · MATRIZ DE SERVICIOS TÁCTICOS 360°' },
-    { id: 'cotizador',  name: 'COTIZADOR 3D',   targetFrame: 20, label: 'VENTANA 03/06 · SIMULADOR Y COTIZADOR 3D' },
-    { id: 'monitoreo',  name: 'COMANDO CCTV',   targetFrame: 30, label: 'VENTANA 04/06 · CENTRO DE COMANDO CCTV BIOMÉTRICO' },
-    { id: 'cobertura',  name: 'COBERTURA RADAR',targetFrame: 36, label: 'VENTANA 05/06 · RADAR DE COBERTURA NACIONAL' },
-    { id: 'contacto',   name: 'DESPACHO VIP',   targetFrame: 39, label: 'VENTANA 06/06 · TERMINAL DE DESPACHO INMEDIATO' }
+    { id: 'hero',       name: 'Inicio',     targetFrame: 0,  label: 'Inicio' },
+    { id: 'servicios',  name: 'Servicios',  targetFrame: 10, label: 'Servicios' },
+    { id: 'cotizador',  name: 'Cotizador',  targetFrame: 20, label: 'Cotizador' },
+    { id: 'monitoreo',  name: 'Monitoreo',  targetFrame: 30, label: 'Monitoreo' },
+    { id: 'cobertura',  name: 'Cobertura',  targetFrame: 36, label: 'Cobertura' },
+    { id: 'contacto',   name: 'Contacto',   targetFrame: 39, label: 'Contacto' }
   ];
 
   let currentStage = 0;
@@ -807,15 +809,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── CLICKING NAVBAR & DOTS NAVIGATES STAGES ──
-  document.querySelectorAll('.nav-menu .nav-link, .hud-win-dot').forEach(link => {
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
-      e.preventDefault();
       const href = link.getAttribute('href') || '';
       const targetId = href.replace('#', '');
       const stageIdx = STAGES.findIndex(s => s.id === targetId);
-      if (stageIdx !== -1) {
-        goToStage(stageIdx);
-      }
+      if (stageIdx === -1) return;
+      e.preventDefault();
+      goToStage(stageIdx);
+      if (mobileOverlay) mobileOverlay.classList.remove('open');
     });
   });
 
@@ -873,7 +875,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (img && img.complete && img.naturalWidth) {
           drawEyeCover(cctvEyeCtx, img, cctvEyeCanvas.width, cctvEyeCanvas.height);
         }
-        if (cctvEyeAngle) cctvEyeAngle.textContent = `ÁNGULO: ${Math.round(deg)}° · ACTIVO`;
+        if (cctvEyeAngle) cctvEyeAngle.textContent = 'Online';
         if (cctvEyeBox) {
           const moveX = (dx / window.innerWidth)  * 35;
           const moveY = (dy / window.innerHeight) * 25;
@@ -887,26 +889,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   requestAnimationFrame(renderEyeTracker);
 
-  // 11. DYNAMIC SCROLL-VELOCITY MARQUEE EFFECT
-  let lastScrollTop = 0;
-  let scrollSpeedTimeout = null;
-  const marqueeTracks = document.querySelectorAll('.yventu-bg-marquee-track, .kinetic-ribbon-track, .ticker-track');
-
-  window.addEventListener('scroll', () => {
-    const st = window.pageYOffset || document.documentElement.scrollTop;
-    const diff = Math.abs(st - lastScrollTop);
-    lastScrollTop = st <= 0 ? 0 : st;
-
-    if (diff > 4) {
-      marqueeTracks.forEach(track => {
-        track.style.animationDuration = '14s';
-      });
-      clearTimeout(scrollSpeedTimeout);
-      scrollSpeedTimeout = setTimeout(() => {
-        marqueeTracks.forEach(track => {
-          track.style.animationDuration = '';
-        });
-      }, 350);
-    }
-  }, { passive: true });
 });
