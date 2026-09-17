@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="corporate.css">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="corporate.css?v=3">
   <link rel="icon" href="LOGO/cropped-Recurso-3@180x.webp" type="image/webp">
 </head>
 <body class="corporate-theme">
@@ -24,6 +24,7 @@
   </nav>
 
   <canvas id="fullscreenEyeCanvas" class="hero-fullscreen-eye-canvas"></canvas>
+  <div class="immersion-falloff" aria-hidden="true"></div>
 
   <header class="main-header" id="navbar">
     <div class="header-container">
@@ -70,30 +71,12 @@
 
   <main>
     <section class="hero-section hero-eye-epicenter stage-deck stage-active" id="hero">
-      <div class="hero-eye-vignette"></div>
-
       <div class="hero-panel">
         <p class="hero-kicker">Grupo Empresarial Seruma</p>
         <h1 class="hero-title">Proteja su empresa</h1>
         <p class="hero-lead-editorial">
           Custodia armada certificada, monitoreo electrónico 24/7 y esquemas de reacción táctica inmediata.
         </p>
-
-        <div class="hero-stats-compact">
-          <div class="hero-stat-item">
-            <strong>+350</strong>
-            <span>empresas protegidas</span>
-          </div>
-          <div class="hero-stat-item">
-            <strong>+15</strong>
-            <span>años de trayectoria</span>
-          </div>
-          <div class="hero-stat-item">
-            <strong>24/7</strong>
-            <span>monitoreo activo</span>
-          </div>
-        </div>
-
         <div class="hero-controls-hud">
           <a href="#cotizador" class="btn-cyber-primary magnetic-target">
             <span class="btn-content">
@@ -106,6 +89,20 @@
               <span class="btn-title">Contacto</span>
             </span>
           </a>
+        </div>
+        <div class="hero-stats-compact">
+          <div class="hero-stat-item">
+            <strong>+350</strong>
+            <span>empresas</span>
+          </div>
+          <div class="hero-stat-item">
+            <strong>+15</strong>
+            <span>años</span>
+          </div>
+          <div class="hero-stat-item">
+            <strong>24/7</strong>
+            <span>monitoreo</span>
+          </div>
         </div>
       </div>
 
@@ -751,6 +748,6 @@
     <span class="floating-wa-tag">WhatsApp</span>
   </a>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>

@@ -641,19 +641,26 @@ document.addEventListener('DOMContentLoaded', () => {
   resizeFullscreenCanvas();
 
   // ── DRAW EYE COVER (CRISP, BRIGHT, 100% SHARP HERO CENTERPIECE) ──
-  function drawEyeCover(ctx, img, cw, ch, px = 0, py = 0) {
+  function drawEyeLayer(ctx, img, cw, ch, zoom = 1, px = 0, py = 0, alpha = 1) {
     if (!img || !img.complete || !img.naturalWidth) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
-    ctx.clearRect(0, 0, cw, ch);
     const iw = img.naturalWidth || 1280;
     const ih = img.naturalHeight || 720;
-    const scale = Math.max(cw / iw, ch / ih);
+    const scale = Math.max(cw / iw, ch / ih) * zoom;
     const dw = iw * scale;
     const dh = ih * scale;
     const ox = (cw - dw) / 2 + px;
     const oy = (ch - dh) / 2 + py;
     ctx.drawImage(img, ox, oy, dw, dh);
+    ctx.restore();
+  }
+
+  function drawEyeCover(ctx, img, cw, ch, px = 0, py = 0) {
+    ctx.clearRect(0, 0, cw, ch);
+    drawEyeLayer(ctx, img, cw, ch, 1.06, px, py, 1);
   }
 
   // ── GLOBAL SMOOTH MOUSE / TOUCH TRACKER ──
@@ -754,11 +761,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Update Telemetry badge
-    if (telemetryEl && !telemetryEl.style.color) {
-      const zoomPct = Math.round((STAGES[activeIdx].targetFrame / (TOTAL_EYE_FRAMES - 1)) * 100);
-      telemetryEl.textContent = `${STAGES[activeIdx].label} · ${zoomPct}% PROFUNDIDAD`;
-    }
+    document.body.dataset.stage = STAGES[activeIdx].id;
+    document.documentElement.style.setProperty('--dive', (activeIdx / (STAGES.length - 1)).toFixed(3));
   }
 
   function goToStage(idx) {
@@ -770,8 +774,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── CONTINUOUS MOUSE WHEEL SCRUBBING ──
   // Every wheel delta smoothly scrubs the eye video frames AND transitions stages!
   window.addEventListener('wheel', (e) => {
+    if (e.target && e.target.closest && e.target.closest('input, textarea, select')) return;
     e.preventDefault();
-    const speed = 0.0028; // Smooth continuous sensitivity
+    const speed = 0.0036;
     targetVirtualDepth = Math.max(0, Math.min(STAGES.length - 1, targetVirtualDepth + e.deltaY * speed));
     const nearestStage = Math.round(targetVirtualDepth);
     if (nearestStage !== currentStage) {
@@ -825,33 +830,37 @@ document.addEventListener('DOMContentLoaded', () => {
   applyActiveStage(0);
 
   function renderEyeTracker() {
-    currentX += (targetX - currentX) * 0.12;
-    currentY += (targetY - currentY) * 0.12;
+    currentX += (targetX - currentX) * 0.1;
+    currentY += (targetY - currentY) * 0.1;
 
-    // ── 0. PERSISTENT 3D EYE (ZOOMS AS YOU ENTER EACH STAGE) ──
-    currentVirtualDepth += (targetVirtualDepth - currentVirtualDepth) * 0.12;
-    const targetFrameForDepth = (currentVirtualDepth / (STAGES.length - 1)) * (TOTAL_EYE_FRAMES - 1);
-    currentEyeFrame += (targetFrameForDepth - currentEyeFrame) * 0.20;
-    const frameIndex = Math.min(TOTAL_EYE_FRAMES - 1, Math.max(0, Math.round(currentEyeFrame)));
+    currentVirtualDepth += (targetVirtualDepth - currentVirtualDepth) * 0.08;
+    const depthT = currentVirtualDepth / (STAGES.length - 1);
+    document.documentElement.style.setProperty('--dive', depthT.toFixed(4));
+
+    const targetFrameForDepth = depthT * (TOTAL_EYE_FRAMES - 1);
+    currentEyeFrame += (targetFrameForDepth - currentEyeFrame) * 0.16;
 
     if (fsCanvas && fsCtx) {
-      const img = eyeImages[frameIndex];
-      if (img && img.complete && img.naturalWidth) {
-        // Subtle mouse parallax for immersive 3D depth
-        const parallaxX = (currentX - window.innerWidth / 2) * 0.025;
-        const parallaxY = (currentY - window.innerHeight / 2) * 0.025;
-        drawEyeCover(fsCtx, img, fsCanvas.width, fsCanvas.height, parallaxX, parallaxY);
+      const cw = fsCanvas.width;
+      const ch = fsCanvas.height;
+      const zoom = 1.08 + depthT * 0.22;
+      const parallaxX = (currentX - window.innerWidth / 2) * (0.05 + depthT * 0.06);
+      const parallaxY = (currentY - window.innerHeight / 2) * (0.035 + depthT * 0.05);
+
+      const f = Math.max(0, Math.min(TOTAL_EYE_FRAMES - 1, currentEyeFrame));
+      const i0 = Math.floor(f);
+      const i1 = Math.min(TOTAL_EYE_FRAMES - 1, i0 + 1);
+      const fade = f - i0;
+
+      fsCtx.clearRect(0, 0, cw, ch);
+      drawEyeLayer(fsCtx, eyeImages[i0], cw, ch, zoom, parallaxX, parallaxY, 1);
+      if (i1 !== i0 && fade > 0.015) {
+        drawEyeLayer(fsCtx, eyeImages[i1], cw, ch, zoom, parallaxX, parallaxY, fade);
       }
 
-      // ── Reticle follows cursor ──
       if (reticleEl) {
         reticleEl.style.left = currentX + 'px';
         reticleEl.style.top  = currentY + 'px';
-      }
-      const zoomPct = Math.round((currentEyeFrame / (TOTAL_EYE_FRAMES - 1)) * 100);
-      if (reticleDegEl) reticleDegEl.textContent = `INMERSIÓN: ${zoomPct}%`;
-      if (telemetryEl && !telemetryEl.style.color) {
-        telemetryEl.textContent = `ESCÁNER OCULAR 3D: ${zoomPct}% PROFUNDIDAD RETINAL`;
       }
     }
 

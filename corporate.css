@@ -722,8 +722,8 @@ p, li, label, input, select, textarea, button, a, span, .section-cyber-desc,
 #monitoreo.stage-deck,
 #cobertura.stage-deck,
 #contacto.stage-deck {
-  justify-content: flex-start !important;
-  padding: 6.5rem 2rem 2rem !important;
+  justify-content: flex-end !important;
+  padding: 5.5rem 4% 2.4rem !important;
 }
 
 .stage-deck {
@@ -751,4 +751,282 @@ p, li, label, input, select, textarea, button, a, span, .section-cyber-desc,
 
 @media (prefers-reduced-motion: reduce) {
   .hero-panel { animation: none; }
+}
+
+/* ==========================================================================
+   IMMERSION LAYER — the eye is the world; UI floats at the edges
+   ========================================================================== */
+
+:root {
+  --dive: 0;
+}
+
+html, body {
+  background: #000 !important;
+}
+
+#fullscreenEyeCanvas,
+.hero-fullscreen-eye-canvas {
+  z-index: 1 !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.immersion-falloff {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 52% 46%, transparent 42%, rgba(0, 0, 0, 0.22) 78%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+main {
+  z-index: 4 !important;
+  background: transparent !important;
+}
+
+#stats,
+.main-footer,
+.hero-eye-vignette,
+.hero-eye-grid-scrim {
+  display: none !important;
+}
+
+.main-header {
+  background: transparent !important;
+  border-bottom: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.main-header.scrolled {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.logo-glow-wrapper {
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+.nav-link {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+}
+
+/* Hero: copy sits low-left, pupil stays open in the center */
+#hero.stage-deck {
+  align-items: flex-start !important;
+  justify-content: flex-end !important;
+  padding: 0 7% 7.5vh 6% !important;
+}
+
+.hero-panel {
+  max-width: 520px;
+  background: none;
+  padding: 0;
+}
+
+.hero-title {
+  font-size: clamp(2.8rem, 6.2vw, 5.4rem) !important;
+  line-height: 0.98 !important;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.35),
+    0 18px 50px rgba(0, 0, 0, 0.75) !important;
+}
+
+.hero-panel .hero-lead-editorial {
+  font-size: 1.02rem !important;
+  max-width: 420px !important;
+  margin-bottom: 1.35rem !important;
+  text-shadow: 0 6px 22px rgba(0, 0, 0, 0.85) !important;
+  color: rgba(244, 241, 234, 0.88) !important;
+}
+
+.hero-stats-compact {
+  border: none;
+  padding: 0.9rem 0 0;
+  margin: 1.2rem 0 0;
+  gap: 1.75rem;
+  background: none;
+}
+
+.hero-stat-item strong {
+  font-size: 1.35rem;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+}
+
+/* Floating glass — see the iris through it */
+.cyber-card,
+.stat-tile,
+.summary-hud-card,
+.cctv-terminal-hud,
+.info-panel-hud-card,
+.testi-hud-box,
+.form-hud-wrapper,
+.cotizador-controls,
+.dispatch-card-link,
+.map-radar-wrapper {
+  background: rgba(8, 10, 14, 0.28) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: blur(6px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(1.05) !important;
+}
+
+.cyber-card:hover,
+.dispatch-card-link:hover,
+.form-hud-wrapper:hover,
+.summary-hud-card:hover {
+  background: rgba(8, 10, 14, 0.42) !important;
+  border-color: rgba(196, 165, 116, 0.4) !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Keep the pupil clear: content hugs the bottom */
+#servicios.stage-deck,
+#cotizador.stage-deck,
+#monitoreo.stage-deck,
+#cobertura.stage-deck,
+#contacto.stage-deck {
+  justify-content: flex-end !important;
+  align-items: center !important;
+  padding: 5.5rem 5% 2.2rem !important;
+}
+
+#servicios .section-head-hud,
+#cotizador .section-head-hud,
+#monitoreo .section-head-hud,
+#cobertura .section-head-hud {
+  text-align: left !important;
+  width: 100%;
+  max-width: 1180px;
+  margin-bottom: 0.85rem !important;
+}
+
+.section-cyber-title {
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.7) !important;
+}
+
+.section-cyber-desc {
+  display: none !important;
+}
+
+#servicios .matrix-cards-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.85rem !important;
+  max-width: 1180px !important;
+  max-height: none !important;
+  width: 100% !important;
+}
+
+#servicios .cyber-card {
+  padding: 1rem 1.1rem 0.9rem !important;
+}
+
+#servicios .card-text,
+#servicios .card-features {
+  display: none !important;
+}
+
+#servicios .cyber-card:hover .card-text {
+  display: block !important;
+  font-size: 0.8rem !important;
+  line-height: 1.4 !important;
+  margin: 0.35rem 0 0.5rem !important;
+}
+
+#servicios .card-title {
+  font-size: 1.05rem !important;
+  margin: 0.25rem 0 0.15rem !important;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+}
+
+#cotizador .cotizador-frame-hud,
+#monitoreo .cctv-terminal-hud,
+#cobertura .coverage-container,
+#contacto .contact-grid-container {
+  width: 100%;
+  max-width: 1080px;
+}
+
+#cotizador .cotizador-grid {
+  max-height: 58vh !important;
+  gap: 1.1rem !important;
+}
+
+#monitoreo .cctv-grid-wrapper {
+  max-height: 42vh;
+}
+
+#monitoreo .feed-box {
+  height: 168px !important;
+}
+
+.cctv-console-log-ticker {
+  background: rgba(0, 0, 0, 0.35) !important;
+}
+
+.form-hud-wrapper,
+.cotizador-controls,
+.summary-hud-card {
+  background: rgba(8, 10, 14, 0.4) !important;
+}
+
+section,
+.hero-section,
+.stats-hud-section,
+.services-matrix-section,
+.cotizador-section,
+.cctv-command-section,
+.coverage-radar-section,
+.testimonials-cyber-section,
+.contact-dispatch-section,
+.stage-deck,
+#hero.stage-deck,
+#servicios.stage-deck,
+#cotizador.stage-deck,
+#monitoreo.stage-deck,
+#cobertura.stage-deck,
+#contacto.stage-deck {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  filter: none !important;
+}
+
+.stage-deck.stage-exit-forward {
+  transform: scale(1.06) translateY(-12px) !important;
+  filter: none !important;
+  opacity: 0 !important;
+}
+
+.stage-deck.stage-exit-backward {
+  transform: scale(0.94) translateY(18px) !important;
+  filter: none !important;
+  opacity: 0 !important;
+}
+
+.floating-hud-wa {
+  opacity: 0.85;
+}
+
+.scroll-capsule {
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 900px) {
+  #hero.stage-deck {
+    padding: 0 1.25rem 6.5rem !important;
+  }
+  #servicios .matrix-cards-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  #servicios .card-text {
+    display: none !important;
+  }
+  .immersion-falloff {
+    background: radial-gradient(ellipse at 50% 42%, transparent 36%, rgba(0, 0, 0, 0.38) 100%);
+  }
 }
