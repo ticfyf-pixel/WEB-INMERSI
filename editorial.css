@@ -1,0 +1,361 @@
+/* ==========================================================================
+   SERUMA editorial portrait layout (Joker/DC composition)
+   Giant character = the 3D eye. UI floats around it. Nothing covers the face.
+   ========================================================================== */
+
+body[data-stage="hero"] #fullscreenEyeCanvas,
+body[data-stage="hero"] .hero-fullscreen-eye-canvas {
+  transform: scale(1.12) translate(14%, 4%) !important;
+  transform-origin: center center !important;
+}
+
+.immersion-falloff {
+  background: radial-gradient(ellipse at 62% 44%, transparent 34%, rgba(0, 0, 0, 0.28) 72%, rgba(6, 8, 12, 0.62) 100%) !important;
+}
+
+/* Header: logo + text links only */
+.main-header .header-container {
+  padding: 1.15rem 2.4rem !important;
+  max-width: none !important;
+}
+
+.nav-menu {
+  gap: 1.8rem !important;
+}
+
+.nav-link {
+  color: rgba(244, 241, 234, 0.62) !important;
+  font-size: 0.92rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: #F4F1EA !important;
+}
+
+.btn-hud-whatsapp,
+.btn-hud-gold,
+.brand-badge {
+  display: none !important;
+}
+
+.header-actions .mobile-toggle {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .header-actions .mobile-toggle {
+    display: flex !important;
+  }
+}
+
+/* Right rail: 01 · dots · 06 */
+.hud-window-nav {
+  right: 2.1rem !important;
+  gap: 0.85rem !important;
+  align-items: center !important;
+}
+
+.hud-window-nav::before,
+.hud-window-nav::after {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: rgba(244, 241, 234, 0.45);
+}
+
+.hud-window-nav::before { content: '01'; margin-bottom: 0.35rem; }
+.hud-window-nav::after { content: '06'; margin-top: 0.35rem; }
+
+.hud-win-dot .win-num,
+.hud-win-dot .win-tip {
+  display: none !important;
+}
+
+.hud-win-dot {
+  justify-content: center !important;
+}
+
+.hud-win-dot .win-circle {
+  width: 9px !important;
+  height: 9px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hud-win-dot.active .win-circle {
+  width: 11px !important;
+  height: 11px !important;
+  background: #F4F1EA !important;
+  border-color: #F4F1EA !important;
+  box-shadow: none !important;
+}
+
+/* Hero composition: title left, portrait right */
+#hero.stage-deck {
+  display: block !important;
+  padding: 0 !important;
+  align-items: unset !important;
+  justify-content: unset !important;
+}
+
+.hero-watermark {
+  position: absolute;
+  top: 8%;
+  right: 7%;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(6rem, 18vw, 14rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  color: rgba(255, 255, 255, 0.06);
+  line-height: 0.8;
+  pointer-events: none;
+  z-index: 3;
+  user-select: none;
+}
+
+.hero-panel {
+  position: absolute !important;
+  left: 5.5% !important;
+  top: 50% !important;
+  transform: translateY(-52%);
+  max-width: 340px !important;
+  z-index: 12;
+  width: min(34vw, 360px);
+}
+
+.hero-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(4.2rem, 8.5vw, 7.2rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.045em !important;
+  line-height: 0.86 !important;
+  color: #F6F3EC !important;
+  margin: 0 0 0.55rem !important;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.45) !important;
+}
+
+.hero-published {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.92rem !important;
+  color: rgba(244, 241, 234, 0.55) !important;
+  margin: 0 0 4.2rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.hero-power-title {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: #F4F1EA !important;
+  margin: 0 0 0.45rem !important;
+  text-transform: none !important;
+}
+
+.hero-panel .hero-lead-editorial {
+  font-size: 0.9rem !important;
+  line-height: 1.55 !important;
+  max-width: 280px !important;
+  margin: 0 !important;
+  color: rgba(244, 241, 234, 0.62) !important;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+}
+
+.portrait-tags {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.float-tag {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 12px;
+  background: rgba(18, 20, 24, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #F4F1EA;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.78rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+.float-tag i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F4F1EA;
+  display: inline-block;
+}
+
+.tag-top { top: 28%; right: 22%; }
+.tag-mid { top: 48%; right: 16%; }
+.tag-bot { top: 63%; right: 24%; }
+
+.hero-scroll-anchor {
+  left: 5.5% !important;
+  bottom: 7% !important;
+  transform: none !important;
+  right: auto !important;
+}
+
+.scroll-capsule {
+  flex-direction: row !important;
+  gap: 10px !important;
+  color: rgba(244, 241, 234, 0.55) !important;
+}
+
+.scroll-text {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-size: 0.82rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+.scroll-mouse {
+  width: 18px !important;
+  height: 26px !important;
+}
+
+.floating-hud-wa {
+  display: none !important;
+}
+
+/* Other stages: same editorial left column, no card walls */
+#servicios.stage-deck {
+  display: block !important;
+  padding: 0 !important;
+}
+
+#servicios .editorial-head {
+  position: absolute !important;
+  left: 5.5% !important;
+  top: 50% !important;
+  transform: translateY(-46%);
+  max-width: 340px;
+  margin: 0 !important;
+  text-align: left !important;
+  z-index: 12;
+}
+
+#servicios .editorial-title {
+  font-size: clamp(3.2rem, 7vw, 5.6rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 0.9 !important;
+  margin: 0 0 0.4rem !important;
+}
+
+#servicios .editorial-desc {
+  display: block !important;
+  max-width: 280px !important;
+  font-size: 0.9rem !important;
+  line-height: 1.55 !important;
+  color: rgba(244, 241, 234, 0.62) !important;
+  margin-top: 2.5rem !important;
+}
+
+#servicios .matrix-cards-grid {
+  position: absolute !important;
+  right: 8% !important;
+  top: 50% !important;
+  transform: translateY(-50%);
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.7rem !important;
+  width: auto !important;
+  max-width: 240px !important;
+  grid-template-columns: none !important;
+  z-index: 12;
+}
+
+#servicios .cyber-card {
+  background: rgba(18, 20, 24, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 999px !important;
+  padding: 8px 16px !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(10px) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+#servicios .cyber-card:hover {
+  transform: none !important;
+  background: rgba(18, 20, 24, 0.62) !important;
+}
+
+#servicios .card-icon-hex,
+#servicios .card-text,
+#servicios .card-features,
+#servicios .card-action-bar {
+  display: none !important;
+}
+
+#servicios .card-title {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  margin: 0 !important;
+  letter-spacing: 0 !important;
+}
+
+#cotizador.stage-deck,
+#monitoreo.stage-deck,
+#cobertura.stage-deck,
+#contacto.stage-deck {
+  justify-content: flex-end !important;
+  padding: 6rem 8% 4rem 5.5% !important;
+}
+
+#cotizador .section-head-hud,
+#monitoreo .section-head-hud,
+#cobertura .section-head-hud {
+  text-align: left !important;
+}
+
+@media (max-width: 900px) {
+  body[data-stage="hero"] #fullscreenEyeCanvas {
+    transform: scale(1.18) translate(0, 8%) !important;
+  }
+
+  .hero-panel,
+  #servicios .editorial-head {
+    left: 1.4rem !important;
+    top: auto !important;
+    bottom: 5.5rem !important;
+    transform: none !important;
+    max-width: 88vw !important;
+    width: auto;
+  }
+
+  .hero-title {
+    font-size: 3.4rem !important;
+  }
+
+  .hero-published {
+    margin-bottom: 1.4rem !important;
+  }
+
+  .portrait-tags,
+  .hero-watermark,
+  #servicios .matrix-cards-grid {
+    display: none !important;
+  }
+
+  .hud-window-nav {
+    display: none !important;
+  }
+}

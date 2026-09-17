@@ -9,8 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <link rel="stylesheet" href="styles.css?v=3">
-  <link rel="stylesheet" href="corporate.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="corporate.css?v=4">
+  <link rel="stylesheet" href="editorial.css?v=4">
   <link rel="icon" href="LOGO/cropped-Recurso-3@180x.webp" type="image/webp">
 </head>
 <body class="corporate-theme">
@@ -32,21 +33,14 @@
         <div class="logo-glow-wrapper">
           <img src="LOGO/cropped-Recurso-3@180x.webp" alt="GRUPO EMPRESARIAL SERUMA" class="brand-img">
         </div>
-        <div class="brand-badge"><span class="gold-text">Seguridad privada</span></div>
       </a>
       <nav class="nav-menu">
         <a href="#hero" class="nav-link active magnetic-target">Inicio</a>
         <a href="#servicios" class="nav-link magnetic-target">Servicios</a>
         <a href="#cotizador" class="nav-link magnetic-target">Cotizador</a>
-        <a href="#monitoreo" class="nav-link magnetic-target">Monitoreo</a>
-        <a href="#cobertura" class="nav-link magnetic-target">Cobertura</a>
         <a href="#contacto" class="nav-link magnetic-target">Contacto</a>
       </nav>
       <div class="header-actions">
-        <a href="https://wa.me/573001234567?text=Hola%20SERUMA%2C%20requiero%20asesoria%20inmediata" target="_blank" rel="noopener" class="btn-hud-whatsapp magnetic-target">
-          <span>WhatsApp</span>
-        </a>
-        <a href="#cotizador" class="btn-hud-gold magnetic-target"><span>Cotizar</span></a>
         <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -71,45 +65,29 @@
 
   <main>
     <section class="hero-section hero-eye-epicenter stage-deck stage-active" id="hero">
+      <div class="hero-watermark" aria-hidden="true">SERUMA</div>
+
       <div class="hero-panel">
-        <p class="hero-kicker">Grupo Empresarial Seruma</p>
-        <h1 class="hero-title">Proteja su empresa</h1>
-        <p class="hero-lead-editorial">
-          Custodia armada certificada, monitoreo electrónico 24/7 y esquemas de reacción táctica inmediata.
-        </p>
-        <div class="hero-controls-hud">
-          <a href="#cotizador" class="btn-cyber-primary magnetic-target">
-            <span class="btn-content">
-              <span class="btn-title">Solicitar cotización</span>
-              <span class="btn-arrow">→</span>
-            </span>
-          </a>
-          <a href="#contacto" class="btn-cyber-secondary magnetic-target">
-            <span class="btn-content">
-              <span class="btn-title">Contacto</span>
-            </span>
-          </a>
-        </div>
-        <div class="hero-stats-compact">
-          <div class="hero-stat-item">
-            <strong>+350</strong>
-            <span>empresas</span>
-          </div>
-          <div class="hero-stat-item">
-            <strong>+15</strong>
-            <span>años</span>
-          </div>
-          <div class="hero-stat-item">
-            <strong>24/7</strong>
-            <span>monitoreo</span>
-          </div>
+        <h1 class="hero-title">Seruma</h1>
+        <p class="hero-published">Seguridad privada · Colombia</p>
+        <div class="hero-power">
+          <h2 class="hero-power-title">Custodia</h2>
+          <p class="hero-lead-editorial">
+            Custodia armada certificada, monitoreo electrónico 24/7 y esquemas de reacción táctica inmediata.
+          </p>
         </div>
       </div>
+
+      <aside class="portrait-tags" aria-hidden="true">
+        <span class="float-tag tag-top"><i></i> Monitoreo 24/7</span>
+        <span class="float-tag tag-mid"><i></i> Reacción &lt; 4 min</span>
+        <span class="float-tag tag-bot"><i></i> +350 empresas</span>
+      </aside>
 
       <div class="hero-scroll-anchor">
         <a href="#servicios" class="scroll-capsule">
           <span class="scroll-mouse"><span class="scroll-wheel"></span></span>
-          <span class="scroll-text">Deslizar para explorar</span>
+          <span class="scroll-text">Scroll Mouse</span>
         </a>
       </div>
     </section>
@@ -143,10 +121,10 @@
     </section>
 
     <section class="services-matrix-section stage-deck" id="servicios">
-      <div class="section-head-hud">
-        <div class="eyebrow-hud">Divisiones de operaciones</div>
-        <h2 class="section-cyber-title">Servicios de Seguridad <span class="gold-gradient">y Vigilancia Especializada</span></h2>
-        <p class="section-cyber-desc">Arquitectura de seguridad blindada modular con tecnología biométrica, vigilancia armada y respuesta motorizada.</p>
+      <div class="section-head-hud editorial-head">
+        <h2 class="section-cyber-title editorial-title">Servicios</h2>
+        <p class="hero-published">Divisiones de operaciones</p>
+        <p class="section-cyber-desc editorial-desc">Vigilancia armada, monitoreo 24/7, escolta VIP, electrónica, patrullaje GPS y propiedad horizontal.</p>
       </div>
 
       <div class="matrix-cards-grid">
@@ -748,6 +726,6 @@
     <span class="floating-wa-tag">WhatsApp</span>
   </a>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
