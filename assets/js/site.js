@@ -1,5 +1,21 @@
 (function () {
   document.documentElement.classList.add("js");
+  const stars = document.getElementById("stars");
+  if (stars && !stars.childElementCount) {
+    let s = 2103981;
+    const rnd = () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < 70; i++) {
+      const d = document.createElement("i");
+      d.className = "star";
+      d.style.left = rnd() * 100 + "%";
+      d.style.top = rnd() * 55 + "%";
+      d.style.opacity = String(0.15 + rnd() * 0.55);
+      d.style.transform = "scale(" + (0.6 + rnd() * 1.6) + ")";
+      frag.appendChild(d);
+    }
+    stars.appendChild(frag);
+  }
   const GATES = [
     "(max-width: 720px)",
     "(orientation: portrait) and (max-width: 1024px)",
@@ -93,10 +109,22 @@
     if (loadK < 1 && rafId === null && scrubOn) rafId = requestAnimationFrame(tick);
   }
 
+  let lastPage = -1;
+  function pageRail() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const y = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
+    if (Math.abs(y - lastPage) < 0.004) return;
+    lastPage = y;
+    document.documentElement.style.setProperty("--page", y.toFixed(3));
+  }
+
   function onScroll() {
     target = heroProgress();
+    pageRail();
     if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick);
   }
+  addEventListener("scroll", pageRail, { passive: true });
+  pageRail();
 
   function unpinFinalStates() {
     document.querySelector(".plan-wrap")?.classList.remove("is-reduced");
