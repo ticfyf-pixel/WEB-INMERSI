@@ -161,7 +161,7 @@
     }
   }).observe(hero);
 
-  document.querySelectorAll(".rise, .hears figure, .faq details, .como-copy, .plan-wrap").forEach((el) => {
+  document.querySelectorAll(".oficio, .rise, .hears figure, .faq details, .como-copy, .plan-wrap").forEach((el) => {
     el.classList.add("rise");
     new IntersectionObserver((entries, obs) => {
       entries.forEach((en) => {
